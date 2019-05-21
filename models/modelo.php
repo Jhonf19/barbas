@@ -29,7 +29,7 @@ session_start();
   function listPublications()
   {
     try {
-      $h = $this->peticion->prepare("SELECT * FROM publicaciones");
+      $h = $this->peticion->prepare("SELECT * FROM publicaciones ORDER BY fecha DESC");
       $h->execute();
       $result = $h->fetchALL(PDO::FETCH_OBJ);
     } catch (\Exception $e) { }

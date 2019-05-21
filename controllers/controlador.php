@@ -13,59 +13,81 @@ class Controlador
 
   function index()
   {
-    include_once('views/layouts/head.html');
-    include_once('views/login.php');
-    include_once('views/layouts/foot.html');
+    if (!isset($_SESSION['admin']) || isset($_SESSION['barber']) || isset($_SESSION['custom'])) {
+      include_once('views/layouts/head.html');
+      include_once('views/login.php');
+      include_once('views/layouts/foot.html');
+    }else {
+      header("location:?b=listPub");
+    }
+  }
+
+
+  function userVerify()
+  {
+      $data=[
+        'user'=>$_POST['user'],
+        'pass'=>$_POST['pass']
+      ];
+    $res = $this->o->userVerify($data);
+    if (!empty($res)) {
+      if ($res[0]->rol == 1) {
+        // $res[0]->auth='szi';
+        $_SESSION['admin']=$res;
+        header("location:?b=listPub");
+        // $_SESSION['admin'][]->auth="si";
+        // echo "<pre>"; print_r($_SESSION); echo "</pre>";
+
+      }else if ($res[0]->rol == 2) {
+        $_SESSION['barber']=$res;
+        header("location:?b=listPub");
+      }else if ($res[0]->rol == 3) {
+        $_SESSION['custom']=$res;
+        header("location:?b=listPub");
+      }
+
+    }else {
+        header("location:?b=index");
+    }
+
   }
 
   function listPub()
   {
-    if (isset($_SESSION['admin'])&& $_SESSION['admin'][0]->rol==1) {
+    if (!isset($_SESSION['admin']) && !isset($_SESSION['barber']) && !isset($_SESSION['custom'])) {
+      header("location:?b=index");
+    }
+    else if(isset($_SESSION['admin'])){
       include_once('views/layouts/head.html');
       include_once('views/layouts/header1.html');
       $res = $this->o->listPublications();
       include_once('views/admin/pub_table.php');
       include_once('views/layouts/foot.html');
-    }else {
-      $this->index();
     }
-  }
-
-  function userVerify()
-  {
-    $data=[
-      'user'=>$_POST['user'],
-      'pass'=>$_POST['pass']
-    ];
-  $res = $this->o->userVerify($data);
-  if (!empty($res)) {
-    // echo "<pre>"; print_r($res[0]->rol); echo "</pre>";
-    if ($res[0]->rol == 1) {
-      $_SESSION['admin']=$res;
-      header("location:?b=listPub");
-      // $this->listPub();
-
-    }else if ($res[0]->rol == 2) {
-      $_SESSION['admin']=$res;
-      echo "bar";
-    }else if ($res[0]->rol == 3) {
-      $_SESSION['admin']=$res;
-      echo "cli";
+    else if(isset($_SESSION['barber'])){
+      include_once('views/layouts/head.html');
+      include_once('views/layouts/header2.html');
+      $res = $this->o->listPublications();
+      include_once('views/card_pub.php');
+      include_once('views/layouts/foot.html');
     }
-
-  }else {
-      header("location:?b=index");
-  }
-  // $this->o->userVerify($data);
+    else if(isset($_SESSION['custom'])){
+      include_once('views/layouts/head.html');
+      include_once('views/layouts/header3.html');
+      $res = $this->o->listPublications();
+      include_once('views/admin/pub_table.php');
+      include_once('views/layouts/foot.html');
+    }
   }
 
   function exit() {
-    unset($_SESSION['admin']);
+    // unset($_SESSION['admin']);
+    session_destroy();
     header("location:?b=index");
   }
 
   function newPub(){
-    if (isset($_SESSION['admin'])&& $_SESSION['admin'][0]->rol==1){
+    if (isset($_SESSION['admin'])){
 
       include_once('views/layouts/head.html');
       include_once('views/layouts/header1.html');
@@ -73,20 +95,24 @@ class Controlador
       include_once('views/layouts/foot.html');
 
     }else {
-      $this->index();
+      header("location:?b=index");
     }
   }
   function createPub(){
-    $data = [
-      'titulo'=>$_POST['titulo'],
-      'texto'=>$_POST['texto'],
-      'url'=>$_POST['url']
-    ];
-    $this->o->createPub($data);
-    if ($res) {
-      header("location:?b=listPub");
+    if (isset($_SESSION['admin'])){
+        $data = [
+          'titulo'=>$_POST['titulo'],
+          'texto'=>$_POST['texto'],
+          'url'=>$_POST['url']
+        ];
+      $res =  $this->o->createPub($data);
+        if ($res) {
+          header("location:?b=listPub");
+        }else {
+          echo "Ocurrió un error  <a href='?b=listPub'>Volver</a>";
+        }
     }else {
-      echo "Ocurrió un error  <a href='?b=listPub'>Volver</a>";
+      header("location:?b=index");
     }
     // echo "<pre>"; print_r($data); echo "</pre>";
   }
