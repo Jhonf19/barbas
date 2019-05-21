@@ -1,26 +1,23 @@
-<?php
-require_once('db/mysql.php');
-require_once('controllers/controlador.php');
-echo "<pre>";
-print_r($_SESSION);
-echo "</pre>";
-    // instancio la clase Cliente_controlador() y nombro al objeto controlador
-$controlador = new Controlador();
+<?php include_once('views/layouts/head.html'); echo "<pre>"; print_r($_SESSION); echo "</pre>";?>
+<div class="container">
+  <br><br>
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">Login</h3>
 
-  // verifica si existe la variable b
-  if (!empty($_REQUEST['b'])) {
-// creo una variable y la llamo metodo y le asigno el valor que venga en b
-$metodo = $_REQUEST['b'];
+      <form action="router.php" method="post">
 
-//verifico si existe un metodo con el mismo nombre de la variable en la clase Controlador
-    if (method_exists($controlador, $metodo)) {
-      // si existe que lo ejecute
-      $controlador->$metodo();
-    }else {
-      // Si no existe que me ejecute el metodo por defecto
-      $controlador->index();
-    }
-  }else {
-    $controlador->index();
-  }
- ?>
+        <div class="form-group">
+          <input type="text" class="form-control" name="user" placeholder="User" value="">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" name="pass" placeholder="Pass" value="">
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" name="button">Aceptar</button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+<?php include_once('views/layouts/foot.html'); ?>

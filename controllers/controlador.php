@@ -1,8 +1,9 @@
 <?php
-require_once('models/modelo.php');
+require_once('../models/modelo.php');
 /**
  *
  */
+
 class Controlador
 {
 
@@ -16,6 +17,10 @@ class Controlador
     include_once('views/layouts/head.html');
     include_once('views/login.php');
     include_once('views/layouts/foot.html');
+  }
+  function bbb()
+  {
+    echo "bbb";
   }
 
   function listPub()

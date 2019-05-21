@@ -4,7 +4,7 @@
     <div class="card-body">
       <h3 class="card-title">Login</h3>
 
-      <form action="?b=userVerify" method="post">
+      <form action="controllers/routes.php?bbb" method="post">
 
       <div class="form-group">
         <input type="text" class="form-control" name="user" placeholder="User" value="">

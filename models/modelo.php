@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once('db/mysql.php');
+
   class Modelo
   {
 
@@ -21,9 +22,9 @@ session_start();
       $resultado = $h->fetchALL(PDO::FETCH_OBJ);
 
      }catch (\Exception $e) {}
-
+       // echo "<pre>"; print_r($resultado); echo "</pre>";
       return    $resultado;
-      $this->peticion=MySQL::desconectar();
+      // $this->peticion=MySQL::desconectar();
   }
 
   function listPublications()
