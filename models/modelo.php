@@ -102,6 +102,21 @@ session_start();
     return $res;
   }
 
+  function serchProducts($id)
+  {
+
+    try {
+      $h = $this->peticion->prepare("SELECT * FROM productos WHERE nombre LIKE '%$id%' ");
+      // $h->bindParam(':id',$id, PDO::PARAM_STR);
+      $h->execute();
+      $res = $h->fetchALL(PDO::FETCH_OBJ);
+    } catch (\Exception $e) { }
+    return $res;
+    // echo "<pre>";
+    // print_r($res);
+    // echo "</pre>";
+  }
+
 
 
 

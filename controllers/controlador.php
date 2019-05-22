@@ -209,6 +209,42 @@ class Controlador
       }
     }
 
+    function venPro(){
+      if (isset($_SESSION['admin'])) {
+      include_once('views/layouts/head.html');
+      include_once('views/layouts/header1.html');
+      $res = $this->o->listProducts();
+      include_once('views/admin/ven_pro.php');
+      include_once('views/layouts/foot.html');
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function addCart(){
+      if (isset($_SESSION['admin'])) {
+        
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function serchPro(){
+      if (isset($_SESSION['admin'])) {
+        $id=$_POST['id'];
+        $res = $this->o->serchProducts($id);
+        header("location:?b=venPro");
+        // echo "<pre>";
+        // print_r($res);
+        // echo "</pre>";
+      }else {
+        header("location:?b=index");
+      }
+
+    }
+
 
 
 
