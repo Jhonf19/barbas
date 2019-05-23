@@ -102,11 +102,22 @@ session_start();
     return $res;
   }
 
+  function listOneProducts($id)
+  {
+    try {
+      $h = $this->peticion->prepare("SELECT * FROM productos WHERE id_producto=:id");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $h->execute();
+      $res = $h->fetch(PDO::FETCH_OBJ);
+    } catch (\Exception $e) { }
+    return $res;
+  }
+
   function serchProducts($id)
   {
 
     try {
-      $h = $this->peticion->prepare("SELECT * FROM productos WHERE nombre LIKE '%$id%' ");
+      $h = $this->peticion->prepare("SELECT * FROM productos WHERE nombre LIKE '%$id%' AND stock > 0 ");
       // $h->bindParam(':id',$id, PDO::PARAM_STR);
       $h->execute();
       $res = $h->fetchALL(PDO::FETCH_OBJ);

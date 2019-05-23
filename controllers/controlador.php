@@ -213,18 +213,8 @@ class Controlador
       if (isset($_SESSION['admin'])) {
       include_once('views/layouts/head.html');
       include_once('views/layouts/header1.html');
-      $res = $this->o->listProducts();
-      include_once('views/admin/ven_pro.php');
+      include_once('views/admin/ven_pro1.php');
       include_once('views/layouts/foot.html');
-
-      }else {
-        header("location:?b=index");
-      }
-    }
-
-    function addCart(){
-      if (isset($_SESSION['admin'])) {
-        
 
       }else {
         header("location:?b=index");
@@ -233,9 +223,14 @@ class Controlador
 
     function serchPro(){
       if (isset($_SESSION['admin'])) {
-        $id=$_POST['id'];
+        $id = $_POST['id'];
+        include_once('views/layouts/head.html');
+        include_once('views/layouts/header1.html');
+        include_once('views/admin/ven_pro1.php');
         $res = $this->o->serchProducts($id);
-        header("location:?b=venPro");
+        include_once('views/admin/ven_pro2.php');
+        include_once('views/layouts/foot.html');
+        // header("location:?b=serchPro");
         // echo "<pre>";
         // print_r($res);
         // echo "</pre>";
@@ -243,6 +238,71 @@ class Controlador
         header("location:?b=index");
       }
 
+    }
+
+    function addCart(){
+
+      if (isset($_SESSION['admin'])) {
+        $id = $_POST['id'];
+        $cantidad = $_POST['cantidad'];
+        $res = $this->o->listOneProducts($id);
+        if ($res) {
+
+          $data = new stdClass();
+
+        $data->id_producto=$res->id_producto;
+        $data->nombre=$res->nombre;
+        $data->descripcion=$res->descripcion;
+        $data->precio=$res->precio;
+        $data->cantidad=$cantidad;
+          $_SESSION['mi_venta'][]=$data;
+          header("location:?b=venPro");
+
+        }else {
+          echo "Ocurrió un error  <a href='?b=venPro'>Volver</a>";
+        }
+        // echo "<pre>";
+        // print_r($_POST);
+        // echo "</pre>";
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function cancelVenta(){
+      if (isset($_SESSION['admin'])) {
+        unset($_SESSION['mi_venta']);
+        header("location:?b=venPro");
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function removeCart(){
+      if (isset($_SESSION['admin'])) {
+        $id = $_GET['id'];
+        unset($_SESSION['mi_venta'][$id]);
+        if (count($_SESSION['mi_venta'])==0) {
+          unset($_SESSION['mi_venta']);
+          header("location:?b=venPro");
+        }else {
+          header("location:?b=venPro");
+        }
+
+          // echo "<pre>";
+          // print_r(count($_SESSION['mi_venta']));
+          // echo "</pre>";
+          // unset($_SESSION['mi_venta'][$id]);
+          // header("location:?b=venPro");
+
+
+        // echo "<pre>";
+        // print_r($_SESSION['mi_venta']);
+        // echo "</pre>";
+        // unset($_SESSION['mi_venta']);
+      }else {
+        header("location:?b=index");
+      }
     }
 
 
