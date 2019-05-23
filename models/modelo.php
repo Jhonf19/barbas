@@ -128,7 +128,27 @@ session_start();
     // echo "</pre>";
   }
 
+  function sellProducts($data)
+  {
+    foreach ($data as $key => $row) {
+      $dif = $data[$key]->stock - $data[$key]->cantidad;
+      try {
+        // $this->peticion->query("SET NAMES 'utf8'");
+        $h = $this->peticion->prepare("UPDATE productos SET stock= :stock WHERE id_producto= :id_producto");
+        $h->bindParam(':id_producto', $data[$key]->id_producto, PDO::PARAM_INT);
+        $h->bindParam(':stock', $dif, PDO::PARAM_INT);
+        $res = $h->execute();
+        // echo "<pre>";
+        //  print_r($dif);
+        //  print_r($data[$key]->id_producto);
+        //
+        //  echo "</pre>";
 
+      }catch (\Exception $e) {}
+    }
+        return $res;
+
+  }
 
 
 

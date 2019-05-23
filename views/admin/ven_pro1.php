@@ -11,9 +11,27 @@
               </div>
               <input type="text" name="id" class="form-control" placeholder="Nombre del producto" aria-label="Example text with button addon" aria-describedby="button-addon1" autofocus>
             </div>
-            <button class="btn btn-success" type="button" name="button">Vender</button>
             <a class="btn btn-secondary" href="?b=cancelVenta">Cancelar</a>
-            <p>TOTAL PRODUCTOS: <?php if (isset($_SESSION['mi_venta'])){ echo count($_SESSION['mi_venta']);} ?></p>
+            <p><b>TOTAL:</b> <?php
+             if (isset($_SESSION['mi_venta'])){
+
+               $cant_final =0;
+               $pre_final =0;
+               $total =0;
+                foreach ($_SESSION['mi_venta'] as $key => $row){
+                  $total = $total+($row->cantidad * $row->precio);
+                  $cant_final = $cant_final + $row->cantidad;
+                }
+                echo "$".$total;
+
+             }else {
+               echo "$0";
+             }
+             ?></p>
+          </form>
+          <form action="?b=sell" method="post">
+            <button class="btn btn-success" type="submit">Vender</button>
+
           </form>
 
           <div class="table-responsive">
@@ -25,7 +43,6 @@
                 <?php if (isset($_SESSION['mi_venta'])): ?>
 
                 <?php foreach ($_SESSION['mi_venta'] as $i => $valor): ?>
-                <!-- <?php// for ($i=0; $i < count($_SESSION['mi_venta']); $i++): ?> -->
 
                 <tr>
                   <td><?php echo $valor->nombre; ?></td>

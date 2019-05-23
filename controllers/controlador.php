@@ -254,6 +254,7 @@ class Controlador
         $data->nombre=$res->nombre;
         $data->descripcion=$res->descripcion;
         $data->precio=$res->precio;
+        $data->stock=$res->stock;
         $data->cantidad=$cantidad;
           $_SESSION['mi_venta'][]=$data;
           header("location:?b=venPro");
@@ -300,6 +301,27 @@ class Controlador
         // print_r($_SESSION['mi_venta']);
         // echo "</pre>";
         // unset($_SESSION['mi_venta']);
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function sell(){
+      if (isset($_SESSION['admin'])&&isset($_SESSION['mi_venta'])) {
+        foreach ($_SESSION['mi_venta'] as $key => $row) {
+          $data[]=$row;
+        }
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+
+        $res = $this->o->sellProducts($data);
+        if ($res) {
+          unset($_SESSION['mi_venta']);
+          header("location:?b=venPro");
+        }else {
+          echo "Ocurrió un error  <a href='?b=venPro'>Volver</a>";
+        }
       }else {
         header("location:?b=index");
       }
