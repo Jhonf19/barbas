@@ -12,7 +12,14 @@
         <td><?php echo $row->costo; ?></td>
         <td><?php echo $row->precio; ?></td>
         <td><?php echo $row->stock; ?></td>
-        <td><a class="btn btn-danger" href="?b=deletePro&prod=<?php echo $row->id_producto; ?>"><i class="fas fa-trash"></i></a></td>
+        <td>
+          <a class="btn btn-danger" href="?b=deletePro&prod=<?php echo $row->id_producto; ?>">
+            <i class="fas fa-trash"></i>
+          </a>
+          <a class="btn btn-warning" href="?b=editarProducto&prod=<?php echo $row->id_producto; ?>">
+            <i class="fas fa-edit"></i>
+          </a>
+        </td>
       </tr>
     <?php endforeach; ?>
     </tbody>

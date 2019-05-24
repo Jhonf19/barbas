@@ -195,19 +195,7 @@ class Controlador
 
     }
 
-    function deletePro(){
-      if (isset($_SESSION['admin'])) {
-        $id=$_GET['prod'];
-        $res = $this->o->deleteProd($id);
-        if ($res) {
-          header("location:?b=listPro");
-        }else {
-          echo "Ocurrió un error  <a href='?b=listPro'>Volver</a>";
-        }
-      }else {
-        header("location:?b=index");
-      }
-    }
+
 
     function venPro(){
       if (isset($_SESSION['admin'])) {
@@ -362,6 +350,58 @@ class Controlador
           header("location:?b=venPro");
         }else {
           echo "Ocurrió un error  <a href='?b=venPro'>Volver</a>";
+        }
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function deletePro(){
+      if (isset($_SESSION['admin'])) {
+        $id=$_GET['prod'];
+        $res = $this->o->deleteProd($id);
+        if ($res) {
+          header("location:?b=listPro");
+        }else {
+          echo "Ocurrió un error  <a href='?b=listPro'>Volver</a>";
+        }
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function editarProducto(){
+      if (isset($_SESSION['admin'])) {
+        $id=$_GET['prod'];
+        $res = $this->o->listOneProducts($id);
+        if ($res) {
+          include_once('views/layouts/head.html');
+          include_once('views/layouts/header1.html');
+          include_once('views/admin/edit_pro.php');
+          include_once('views/layouts/foot.html');
+
+        }else {
+          echo "Ocurrió un error  <a href='?b=listPro'>Volver</a>";
+        }
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function editPro(){
+      if (isset($_SESSION['admin'])) {
+        $data=[
+          'id_producto'=>$_POST['id_producto'],
+          'nombre'=>$_POST['nombre'],
+          'descripcion'=>$_POST['descripcion'],
+          'costo'=>$_POST['costo'],
+          'precio'=>$_POST['precio']
+        ];
+        $res = $this->o->editProduct($data);
+        if ($res) {
+            header("location:?b=listPro");
+        }else {
+          echo "Ocurrió un error  <a href='?b=listPro'>Volver</a>";
         }
       }else {
         header("location:?b=index");

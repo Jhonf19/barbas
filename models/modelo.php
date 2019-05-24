@@ -91,6 +91,24 @@ session_start();
     return $result;
   }
 
+  function editProduct($data)
+  {
+    try {
+      // $this->peticion->query("SET NAMES 'utf8'");
+      $h = $this->peticion->prepare("UPDATE productos SET nombre=:nombre, descripcion=:descripcion, costo=:costo, precio=:precio WHERE id_producto=:id_producto");
+      $h->bindParam(':id_producto', $data['id_producto'], PDO::PARAM_INT);
+      $h->bindParam(':nombre', $data['nombre'], PDO::PARAM_STR);
+      $h->bindParam(':descripcion', $data['descripcion'], PDO::PARAM_STR);
+      $h->bindParam(':costo', $data['costo'], PDO::PARAM_INT);
+      $h->bindParam(':precio', $data['precio'], PDO::PARAM_INT);
+      $res = $h->execute();
+
+    }catch (\Exception $e) {}
+       // echo "<pre>"; print_r($res); echo "</pre>";
+       return $res;
+
+  }
+
   function deleteProd($id){
     try {
       $h = $this->peticion->prepare("DELETE FROM productos WHERE id_producto=:id");
@@ -101,6 +119,9 @@ session_start();
     }
     return $res;
   }
+
+
+
 
   function listOneProducts($id)
   {
