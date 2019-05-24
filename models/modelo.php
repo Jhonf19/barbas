@@ -124,7 +124,7 @@ session_start();
     } catch (\Exception $e) { }
     return $res;
     // echo "<pre>";
-    // print_r($res);
+    // print_r($res[0]->nombre);
     // echo "</pre>";
   }
 

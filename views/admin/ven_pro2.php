@@ -5,7 +5,6 @@
     </thead>
     <tbody>
       <?php foreach ($res as $row): ?>
-
       <tr>
         <td><?php echo $row->nombre; ?></td>
         <td><?php echo $row->descripcion; ?></td>
@@ -21,7 +20,7 @@
               <p class="dropdown-item">CANTIDAD</p>
               <div class="dropdown-divider"></div>
               <div class="input-group mb-3">
-                  <input type="hidden" name="id" value="<?php echo $row->id_producto; ?>">
+                  <input type="hidden" name="obj" value='<?php echo serialize($row); ?>'>
                   <input class="form-control" type="text" name="cantidad" value="1" placeholder="0" autofocus>
                   <div class="input-group-append">
                     <button class="btn btn-success" type="submit">ok</button>

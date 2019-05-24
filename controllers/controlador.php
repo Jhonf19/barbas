@@ -243,28 +243,48 @@ class Controlador
     function addCart(){
 
       if (isset($_SESSION['admin'])) {
-        $id = $_POST['id'];
+        $obj =  unserialize($_POST['obj']);
         $cantidad = $_POST['cantidad'];
-        $res = $this->o->listOneProducts($id);
-        if ($res) {
 
-          $data = new stdClass();
 
-        $data->id_producto=$res->id_producto;
-        $data->nombre=$res->nombre;
-        $data->descripcion=$res->descripcion;
-        $data->precio=$res->precio;
-        $data->stock=$res->stock;
-        $data->cantidad=$cantidad;
-          $_SESSION['mi_venta'][]=$data;
-          header("location:?b=venPro");
+
+        if (isset($_SESSION['mi_venta'])) {
+          $equ=0;
+          foreach ($_SESSION['mi_venta'] as  $row) {
+            if ($row->id_producto == $obj->id_producto) {
+              $row->cantidad = $row->cantidad + $cantidad;
+              $equ=$equ+1;
+
+            }
+
+          }
+              if ($equ>0) {
+                header("location:?b=venPro");
+              }else {
+                $data = new stdClass();
+                $data->id_producto=$obj->id_producto;
+                $data->nombre=$obj->nombre;
+                $data->descripcion=$obj->descripcion;
+                $data->precio=$obj->precio;
+                $data->stock=$obj->stock;
+                $data->cantidad=$cantidad;
+                $_SESSION['mi_venta'][]=$data;
+                header("location:?b=venPro");
+              }
 
         }else {
-          echo "Ocurrió un error  <a href='?b=venPro'>Volver</a>";
+          $data = new stdClass();
+          $data->id_producto=$obj->id_producto;
+          $data->nombre=$obj->nombre;
+          $data->descripcion=$obj->descripcion;
+          $data->precio=$obj->precio;
+          $data->stock=$obj->stock;
+          $data->cantidad=$cantidad;
+          $_SESSION['mi_venta'][]=$data;
+          header("location:?b=venPro");
         }
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
+
+
       }else {
         header("location:?b=index");
       }
@@ -290,17 +310,6 @@ class Controlador
           header("location:?b=venPro");
         }
 
-          // echo "<pre>";
-          // print_r(count($_SESSION['mi_venta']));
-          // echo "</pre>";
-          // unset($_SESSION['mi_venta'][$id]);
-          // header("location:?b=venPro");
-
-
-        // echo "<pre>";
-        // print_r($_SESSION['mi_venta']);
-        // echo "</pre>";
-        // unset($_SESSION['mi_venta']);
       }else {
         header("location:?b=index");
       }
