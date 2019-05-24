@@ -409,6 +409,29 @@ class Controlador
     }
 
 
+    function surtPro(){
+      if (isset($_SESSION['admin'])) {
+        // echo "<pre>";
+        // print_r($_POST);
+        // echo "</pre>";
+        $id_producto=$_POST['id_producto'];
+        $cantidad=$_POST['cantidad']+$_POST['stock'];
+
+        $res = $this->o->surtProduct($id_producto, $cantidad);
+        if ($res) {
+          header("location:?b=listPro");
+
+        }else {
+          echo "Ocurrió un error  <a href='?b=listPro'>Volver</a>";
+        }
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+
+
+
 
 
 

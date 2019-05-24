@@ -171,6 +171,21 @@ session_start();
 
   }
 
+  function surtProduct($id_producto, $cantidad)
+  {
+    try {
+      // $this->peticion->query("SET NAMES 'utf8'");
+      $h = $this->peticion->prepare("UPDATE productos SET stock=:stock WHERE id_producto=:id_producto");
+      $h->bindParam(':id_producto', $id_producto, PDO::PARAM_INT);
+      $h->bindParam(':stock', $cantidad, PDO::PARAM_INT);
+      $res = $h->execute();
+
+    }catch (\Exception $e) {}
+       // echo "<pre>"; print_r($cantidad); echo "</pre>";
+       return $res;
+
+  }
+
 
 
 
