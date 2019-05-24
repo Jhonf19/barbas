@@ -226,8 +226,36 @@ class Controlador
         $id = $_POST['id'];
         include_once('views/layouts/head.html');
         include_once('views/layouts/header1.html');
-        include_once('views/admin/ven_pro1.php');
         $res = $this->o->serchProducts($id);
+        if (isset($_SESSION['mi_venta'])) {
+          $equ=0;
+          foreach ($res as $key => $row) {
+            foreach ($_SESSION['mi_venta'] as $key2 => $row2) {
+              if ($row->id_producto == $_SESSION['mi_venta'][$key2]->id_producto) {
+
+                $row->stock = $row->stock - $_SESSION['mi_venta'][$key2]->cantidad;
+                $equ=$equ+1;
+
+              }
+              // code...
+            }
+
+          }
+          // echo "<pre>";
+          // print_r($equ);
+          // echo "</pre>";
+          include_once('views/admin/ven_pro1.php');
+          include_once('views/admin/ven_pro2.php');
+          include_once('views/layouts/foot.html');
+          //
+          //     if ($equ>0) {
+          //       header("location:?b=venPro");
+          //     }else {
+          //
+          //     }
+
+        }
+        include_once('views/admin/ven_pro1.php');
         include_once('views/admin/ven_pro2.php');
         include_once('views/layouts/foot.html');
         // header("location:?b=serchPro");
@@ -245,44 +273,48 @@ class Controlador
       if (isset($_SESSION['admin'])) {
         $obj =  unserialize($_POST['obj']);
         $cantidad = $_POST['cantidad'];
+        if ($cantidad > $obj->stock || $cantidad <= 0) {
+            echo "Por favor ingrese una cantidad valida <a href='?b=venPro'>Volver</a>";
+        }else {
+          if (isset($_SESSION['mi_venta'])) {
+            $equ=0;
+            foreach ($_SESSION['mi_venta'] as  $row) {
+              if ($row->id_producto == $obj->id_producto) {
+                $row->cantidad = $row->cantidad + $cantidad;
+                $equ=$equ+1;
 
-
-
-        if (isset($_SESSION['mi_venta'])) {
-          $equ=0;
-          foreach ($_SESSION['mi_venta'] as  $row) {
-            if ($row->id_producto == $obj->id_producto) {
-              $row->cantidad = $row->cantidad + $cantidad;
-              $equ=$equ+1;
-
-            }
-
-          }
-              if ($equ>0) {
-                header("location:?b=venPro");
-              }else {
-                $data = new stdClass();
-                $data->id_producto=$obj->id_producto;
-                $data->nombre=$obj->nombre;
-                $data->descripcion=$obj->descripcion;
-                $data->precio=$obj->precio;
-                $data->stock=$obj->stock;
-                $data->cantidad=$cantidad;
-                $_SESSION['mi_venta'][]=$data;
-                header("location:?b=venPro");
               }
 
-        }else {
-          $data = new stdClass();
-          $data->id_producto=$obj->id_producto;
-          $data->nombre=$obj->nombre;
-          $data->descripcion=$obj->descripcion;
-          $data->precio=$obj->precio;
-          $data->stock=$obj->stock;
-          $data->cantidad=$cantidad;
-          $_SESSION['mi_venta'][]=$data;
-          header("location:?b=venPro");
+            }
+                if ($equ>0) {
+                  header("location:?b=venPro");
+                }else {
+                  $data = new stdClass();
+                  $data->id_producto=$obj->id_producto;
+                  $data->nombre=$obj->nombre;
+                  $data->descripcion=$obj->descripcion;
+                  $data->precio=$obj->precio;
+                  $data->stock=$obj->stock;
+                  $data->cantidad=$cantidad;
+                  $_SESSION['mi_venta'][]=$data;
+                  header("location:?b=venPro");
+                }
+
+          }else {
+            $data = new stdClass();
+            $data->id_producto=$obj->id_producto;
+            $data->nombre=$obj->nombre;
+            $data->descripcion=$obj->descripcion;
+            $data->precio=$obj->precio;
+            $data->stock=$obj->stock;
+            $data->cantidad=$cantidad;
+            $_SESSION['mi_venta'][]=$data;
+            header("location:?b=venPro");
+          }
         }
+
+
+
 
 
       }else {
