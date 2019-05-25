@@ -186,6 +186,49 @@ session_start();
 
   }
 
+  function createPerf($data)
+  {
+    try {
+      // $this->peticion->query("SET NAMES 'utf8'");
+      $h = $this->peticion->prepare("INSERT INTO personas VALUES(NULL,:documento, :nombre, :apellido, :correo, :password, :rol)");
+      $h->bindParam(':documento', $data['documento'], PDO::PARAM_STR);
+      $h->bindParam(':nombre', $data['nombre'], PDO::PARAM_STR);
+      $h->bindParam(':apellido', $data['apellido'], PDO::PARAM_STR);
+      $h->bindParam(':correo', $data['correo'], PDO::PARAM_STR);
+      $h->bindParam(':password', $data['documento'], PDO::PARAM_STR);
+      $h->bindParam(':rol', $data['rol'], PDO::PARAM_INT);
+      $res = $h->execute();
+
+    }catch (\Exception $e) {}
+       // echo "<pre>"; print_r($res.'kk'); echo "</pre>";
+       return $res;
+
+  }
+
+  function listPersons($rol)
+  {
+    if (empty($rol)) {
+      try {
+        $h = $this->peticion->prepare("SELECT personas.id_persona, personas.documento, personas.nombre, personas.apellido, personas.correo, personas.rol, roles.id_rol, roles.rol AS rol_name
+                                          FROM personas, roles
+                                          WHERE personas.rol = roles.id_rol");
+        $h->execute();
+        $res = $h->fetchALL(PDO::FETCH_OBJ);
+      } catch (\Exception $e) { }
+      return $res;
+  }else {
+    try {
+      $h = $this->peticion->prepare("SELECT personas.id_persona, personas.documento, personas.nombre, personas.apellido, personas.correo, personas.rol, roles.id_rol, roles.rol AS rol_name
+                                        FROM personas, roles
+                                        WHERE personas.rol = roles.id_rol AND personas.rol =:rol");
+      $h->bindParam(':rol', $rol, PDO::PARAM_INT);
+      $h->execute();
+      $res = $h->fetchALL(PDO::FETCH_OBJ);
+    } catch (\Exception $e) { }
+    return $res;
+  }
+  }
+
 
 
 

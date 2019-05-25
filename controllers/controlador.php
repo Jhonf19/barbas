@@ -430,6 +430,63 @@ class Controlador
     }
 
 
+    /*///Barbers///*/
+
+    function newPerf(){
+      if (isset($_SESSION['admin'])) {
+        include_once('views/layouts/head.html');
+        include_once('views/layouts/header1.html');
+        include_once('views/admin/new_barb.html');
+        include_once('views/layouts/foot.html');
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+
+
+    function createPerf(){
+      if (isset($_SESSION['admin'])){
+        $data=[
+          'documento'=>$_POST['documento'],
+          'nombre'=>$_POST['nombre'],
+          'apellido'=>$_POST['apellido'],
+          'correo'=>$_POST['correo'],
+          'rol'=>$_POST['rol']
+        ];
+        $res = $this->o->createPerf($data);
+        // echo "<pre>"; print_r($_POST); echo "</pre>";
+        if ($res) {
+          header("location:?b=listPro");
+        }else {
+          echo "Ocurrió un error  <a href='?b=newPro'>Volver</a>";
+        }
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function listAcounts(){
+      if (isset($_SESSION['admin'])) {
+        $rol='';
+        if (isset($_GET['list']) && !empty($_GET['list']) && $_GET['list'] >=1 && $_GET['list'] <=3) {
+          $rol=$_GET['list'];
+        }
+        include_once('views/layouts/head.html');
+        include_once('views/layouts/header1.html');
+        $res = $this->o->listPersons($rol);
+        include_once('views/admin/acounts_table.php');
+        include_once('views/layouts/foot.html');
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    
+
 
 
 
