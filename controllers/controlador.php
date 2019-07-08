@@ -485,8 +485,57 @@ class Controlador
       }
     }
 
-    
+    function agend(){
+      if (isset($_SESSION['custom'])) {
 
+        include_once('views/layouts/head.html');
+        include_once('views/layouts/header3.html');
+        $res = $this->o->listPersons($rol=2);
+        include_once('views/custom/agend.php');
+        include_once('views/layouts/foot.html');
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+
+    function new_agend(){
+      if (isset($_SESSION['custom'])) {
+        include_once('views/layouts/head.html');
+        include_once('views/layouts/header3.html');
+        $res = $this->o->listTur($_GET['cita'], '');
+        include_once('views/custom/agend_barber.php');
+        include_once('views/layouts/foot.html');
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function createTurn(){
+      if (isset($_SESSION['custom'])) {
+        $valid = $this->o->listTur('',$_SESSION['custom'][0]->id_persona);
+        if ($valid) {
+          echo "ya tienes <a href='?b=agend'>Volver</a>";
+
+        }else {
+          $res = $this->o->createTurn($_GET['cita'],$_SESSION['custom'][0]->id_persona);
+          if ($res) {
+            header("location:?b=agend");
+          }else {
+            echo "Error <a href='?b=agend'>Volver</a>";
+          }
+        }
+        // echo "<pre>";
+        // print_r($valid);
+        // echo "</pre>";
+
+      }else {
+        header("location:?b=index");
+      }
+
+    }
 
 
 

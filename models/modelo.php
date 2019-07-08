@@ -229,7 +229,47 @@ session_start();
   }
   }
 
+  function listTur($idBar, $idCli){
+    if ($idBar) {
+        try {
+              $h = $this->peticion->prepare("SELECT * FROM turnos WHERE barbero=:barbero");
+              $h->bindParam(':barbero', $idBar, PDO::PARAM_INT);
+              $h->execute();
+              $res = $h->fetchALL(PDO::FETCH_OBJ);
 
+            } catch (\Exception $e) {
+
+            }
+            return $res;
+
+    }
+    if ($idCli) {
+      try {
+            $h = $this->peticion->prepare("SELECT * FROM turnos WHERE cliente=:cliente");
+            $h->bindParam(':cliente', $idCli, PDO::PARAM_INT);
+            $h->execute();
+            $res = $h->fetchALL(PDO::FETCH_OBJ);
+
+          } catch (\Exception $e) {
+
+          }
+          return $res;
+    }
+  }
+
+  function createTurn($idBar, $idCli){
+    try {
+
+      $h = $this->peticion->prepare("INSERT INTO turnos VALUES(NULL,:barbero, :cliente)");
+      $h->bindParam(':barbero', $idBar, PDO::PARAM_INT);
+      $h->bindParam(':cliente', $idCli, PDO::PARAM_INT);
+      $res = $h->execute();
+
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
 
 
 }
