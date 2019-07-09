@@ -485,6 +485,21 @@ class Controlador
       }
     }
 
+
+    function listcitas(){
+      if (isset($_SESSION['barber'])) {
+
+        include_once('views/layouts/head.html');
+        include_once('views/layouts/header2.html');
+        $res = $this->o->listTur($_SESSION['barber'][0]->id_persona,'');
+        include_once('views/barber/cita_table.php');
+        include_once('views/layouts/foot.html');
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
     function agend(){
       if (isset($_SESSION['custom'])) {
 
