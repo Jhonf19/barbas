@@ -505,6 +505,7 @@ class Controlador
         include_once('views/layouts/head.html');
         include_once('views/layouts/header3.html');
         $res = $this->o->listTur($_GET['cita'], '');
+        $res2 = $this->o->listBarber($_GET['cita']);
         include_once('views/custom/agend_barber.php');
         include_once('views/layouts/foot.html');
 
@@ -517,7 +518,7 @@ class Controlador
       if (isset($_SESSION['custom'])) {
         $valid = $this->o->listTur('',$_SESSION['custom'][0]->id_persona);
         if ($valid) {
-          echo "ya tienes <a href='?b=agend'>Volver</a>";
+         echo "ya tienes un turno con ".$valid[0]->nombre ." ".$valid[0]->apellido."  <a href='?b=agend'>Volver</a>";
 
         }else {
           $res = $this->o->createTurn($_GET['cita'],$_SESSION['custom'][0]->id_persona);
@@ -535,6 +536,21 @@ class Controlador
         header("location:?b=index");
       }
 
+    }
+
+    function deleteTurn(){
+      if (isset($_SESSION['custom'])) {
+        $id = $_GET['cm'];
+        $res = $this->o->deleteTurn($id);
+
+        if ($res) {
+            header("location:?b=agend");
+        }else {
+          echo "Error <a href='?b=agend'>Volver</a>";
+        }
+      }else {
+        header("location:?b=index");
+      }
     }
 
 

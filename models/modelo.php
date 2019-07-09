@@ -245,7 +245,9 @@ session_start();
     }
     if ($idCli) {
       try {
-            $h = $this->peticion->prepare("SELECT * FROM turnos WHERE cliente=:cliente");
+            $h = $this->peticion->prepare("SELECT turnos.id_turno, turnos.barbero, turnos.cliente, personas.id_persona, personas.nombre, personas.apellido
+              FROM turnos, personas WHERE turnos.barbero = personas.id_persona
+              AND turnos.cliente = :cliente");
             $h->bindParam(':cliente', $idCli, PDO::PARAM_INT);
             $h->execute();
             $res = $h->fetchALL(PDO::FETCH_OBJ);
@@ -270,6 +272,35 @@ session_start();
     }
     return $res;
   }
+
+  function listBarber($id){
+    try {
+          $h = $this->peticion->prepare("SELECT id_persona, nombre, apellido FROM personas WHERE rol=2 AND id_persona=:id");
+          $h->bindParam(':id', $id, PDO::PARAM_INT);
+          $h->execute();
+          $res = $h->fetchALL(PDO::FETCH_OBJ);
+
+        } catch (\Exception $e) {
+
+        }
+        return $res;
+  }
+
+  function deleteTurn($id){
+    try {
+      $h = $this->peticion->prepare("DELETE FROM turnos WHERE id_turno=:id");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $res = $h->execute();
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
+
+
+
+
+
 
 
 }
