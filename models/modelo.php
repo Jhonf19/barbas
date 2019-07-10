@@ -259,12 +259,13 @@ session_start();
     }
   }
 
-  function createTurn($idBar, $idCli){
+  function createTurn($idBar, $idCli, $codTu){
     try {
 
-      $h = $this->peticion->prepare("INSERT INTO turnos VALUES(NULL,:barbero, :cliente)");
+      $h = $this->peticion->prepare("INSERT INTO turnos VALUES(NULL,:barbero, :cliente, :codigo_t)");
       $h->bindParam(':barbero', $idBar, PDO::PARAM_INT);
       $h->bindParam(':cliente', $idCli, PDO::PARAM_INT);
+      $h->bindParam(':codigo_t', $codTu, PDO::PARAM_INT);
       $res = $h->execute();
 
     } catch (\Exception $e) {

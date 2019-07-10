@@ -13,7 +13,8 @@
       <tr>
         <td><?php echo $key+1 ?></td>
         <td><?php if ($row->cliente==$_SESSION['custom'][0]->id_persona) {
-          echo  "YO";
+
+          echo  "YO ".$row->codigo_t;
         }else {
           echo "OTRO";
         }  ?></td>

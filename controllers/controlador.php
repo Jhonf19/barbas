@@ -500,6 +500,25 @@ class Controlador
       }
     }
 
+    function verifyTurn(){
+      if (isset($_SESSION['barber'])) {
+        // echo "<pre>";
+        // print_r($_GET['cm']);
+        // echo "</pre>";
+        include_once('views/layouts/head.html');
+        include_once('views/layouts/header2.html');
+        $res = $this->o->listTur('',$_GET['cm']);
+        include_once('views/barber/cita_table.php');
+        include_once('views/layouts/foot.html');
+
+        if ($res) {
+          // code...
+        }
+      }else {
+        header("location:?b=index");
+      }
+    }
+
     function agend(){
       if (isset($_SESSION['custom'])) {
 
@@ -536,7 +555,8 @@ class Controlador
          echo "ya tienes un turno con ".$valid[0]->nombre ." ".$valid[0]->apellido."  <a href='?b=agend'>Volver</a>";
 
         }else {
-          $res = $this->o->createTurn($_GET['cita'],$_SESSION['custom'][0]->id_persona);
+
+          $res = $this->o->createTurn($_GET['cita'],$_SESSION['custom'][0]->id_persona,$ram=random_int(0, 999).$_SESSION['custom'][0]->id_persona);
           if ($res) {
             header("location:?b=agend");
           }else {
@@ -554,12 +574,16 @@ class Controlador
     }
 
     function deleteTurn(){
-      if (isset($_SESSION['custom'])) {
+      if (isset($_SESSION['custom']) || $_SESSION['barber']) {
         $id = $_GET['cm'];
         $res = $this->o->deleteTurn($id);
 
         if ($res) {
-            header("location:?b=agend");
+            if (isset($_SESSION['custom'])) {
+              header("location:?b=agend");
+            }else {
+              header("location:?b=listcitas");
+            }
         }else {
           echo "Error <a href='?b=agend'>Volver</a>";
         }
