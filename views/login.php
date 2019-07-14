@@ -7,13 +7,13 @@
       <form action="?b=userVerify" method="post">
 
       <div class="form-group">
-        <input type="text" class="form-control" name="user" placeholder="User" value="">
+        <input type="text" class="form-control" name="user" placeholder="Usuario" required>
       </div>
       <div class="form-group">
-        <input type="password" class="form-control" name="pass" placeholder="Pass" value="">
+        <input type="password" class="form-control" name="pass" placeholder="Contraseña" required>
       </div>
       <button class="btn btn-primary btn-block" type="submit" name="button">Aceptar</button>
-
+      <a type="button" class="btn btn-secondary btn-block" href="?b=home">Cancelar</a>
     </form>
 
     </div>

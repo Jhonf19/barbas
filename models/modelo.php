@@ -28,12 +28,31 @@ session_start();
 
   function listPublications()
   {
+
     try {
-      $h = $this->peticion->prepare("SELECT * FROM publicaciones ORDER BY fecha DESC");
+      $h = $this->peticion->prepare("SELECT * FROM publicaciones ORDER BY fecha DESC LIMIT 2");
       $h->execute();
       $result = $h->fetchALL(PDO::FETCH_OBJ);
     } catch (\Exception $e) { }
     return $result;
+
+    // echo "<pre>"; print_r($lim); echo "</pre>";
+
+  }
+
+  function listPubAjax($id)
+  {
+
+    try {
+      $h = $this->peticion->prepare("SELECT * FROM publicaciones WHERE id_publicacion < :id ORDER BY fecha DESC LIMIT 2");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $h->execute();
+      $result = $h->fetchALL(PDO::FETCH_OBJ);
+    } catch (\Exception $e) { }
+    return $result;
+
+    // echo "<pre>"; print_r($id); echo "</pre>";
+
   }
 
   function createPub($data)
@@ -41,10 +60,13 @@ session_start();
     // echo "<pre>"; print_r($data['url']['size']); echo "</pre>";
     try {
       // $this->peticion->query("SET NAMES 'utf8'");
-      $h = $this->peticion->prepare("INSERT INTO publicaciones VALUES(NULL, NULL, :titulo, :texto, :url_img)");
+      $h = $this->peticion->prepare("INSERT INTO publicaciones VALUES(NULL, NULL, :titulo, :texto, :img1, :img2, :img3, :img4)");
       $h->bindParam(':titulo', $data['titulo'], PDO::PARAM_STR);
       $h->bindParam(':texto', $data['texto'], PDO::PARAM_STR);
-      $h->bindParam(':url_img', $data['url']['name'], PDO::PARAM_STR);
+      $h->bindParam(':img1', $data['img1'], PDO::PARAM_STR);
+      $h->bindParam(':img2', $data['img2'], PDO::PARAM_STR);
+      $h->bindParam(':img3', $data['img3'], PDO::PARAM_STR);
+      $h->bindParam(':img4', $data['img4'], PDO::PARAM_STR);
       $res = $h->execute();
 
      }catch (\Exception $e) {}
@@ -190,7 +212,7 @@ session_start();
   {
     try {
       // $this->peticion->query("SET NAMES 'utf8'");
-      $h = $this->peticion->prepare("INSERT INTO personas VALUES(NULL,:documento, :nombre, :apellido, :correo, :password, :rol)");
+      $h = $this->peticion->prepare("INSERT INTO personas VALUES(NULL,:documento, :nombre, :apellido, :correo, :password, :rol, 1)");
       $h->bindParam(':documento', $data['documento'], PDO::PARAM_STR);
       $h->bindParam(':nombre', $data['nombre'], PDO::PARAM_STR);
       $h->bindParam(':apellido', $data['apellido'], PDO::PARAM_STR);
@@ -205,28 +227,64 @@ session_start();
 
   }
 
-  function listPersons($rol)
+  function editarAcount($id){
+    try {
+      $h = $this->peticion->prepare("SELECT id_persona, estado FROM personas WHERE id_persona=:id");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $h->execute();
+      $res = $h->fetch(PDO::FETCH_OBJ);
+    } catch (\Exception $e) { }
+    return $res;
+    // echo "<pre>"; print_r($res-); echo "</pre>";
+  }
+
+  function listPersons($rol, $state)
   {
-    if (empty($rol)) {
+    if (!empty($rol) && !empty($state)){
+      // echo "c1";
+      // echo "rol ".$rol;
+      // echo "est ".$state;
       try {
-        $h = $this->peticion->prepare("SELECT personas.id_persona, personas.documento, personas.nombre, personas.apellido, personas.correo, personas.rol, roles.id_rol, roles.rol AS rol_name
+        $h = $this->peticion->prepare("SELECT personas.id_persona, personas.documento, personas.nombre, personas.apellido, personas.correo, personas.estado, personas.rol, roles.id_rol, roles.rol AS rol_name
+                                          FROM personas, roles
+                                          WHERE personas.rol = roles.id_rol AND personas.rol = :rol AND  personas.estado = :state");
+        $h->bindParam(':rol', $rol, PDO::PARAM_INT);
+        $h->bindParam(':state', $state, PDO::PARAM_INT);
+        $h->execute();
+        $res = $h->fetchALL(PDO::FETCH_OBJ);
+      } catch (\Exception $e) { }
+      return $res;
+    }
+
+    if (empty($rol) && empty($state)) {
+      // echo "c2";
+      // echo "rol ".$rol;
+      // echo "est ".$state;
+      try {
+        $h = $this->peticion->prepare("SELECT personas.id_persona, personas.documento, personas.nombre, personas.apellido, personas.correo, personas.estado, personas.rol, roles.id_rol, roles.rol AS rol_name
                                           FROM personas, roles
                                           WHERE personas.rol = roles.id_rol");
         $h->execute();
         $res = $h->fetchALL(PDO::FETCH_OBJ);
       } catch (\Exception $e) { }
       return $res;
-  }else {
+  }
+
+  if (!empty($rol)) {
+    // echo "c3";
+    // echo "rol ".$rol;
+    // echo "est ".$state;
     try {
-      $h = $this->peticion->prepare("SELECT personas.id_persona, personas.documento, personas.nombre, personas.apellido, personas.correo, personas.rol, roles.id_rol, roles.rol AS rol_name
+      $h = $this->peticion->prepare("SELECT personas.id_persona, personas.documento, personas.nombre, personas.apellido, personas.correo, personas.estado, personas.rol, roles.id_rol, roles.rol AS rol_name
                                         FROM personas, roles
-                                        WHERE personas.rol = roles.id_rol AND personas.rol =:rol");
+                                        WHERE personas.rol = roles.id_rol AND  personas.rol = :rol");
       $h->bindParam(':rol', $rol, PDO::PARAM_INT);
       $h->execute();
       $res = $h->fetchALL(PDO::FETCH_OBJ);
     } catch (\Exception $e) { }
     return $res;
   }
+
   }
 
   function listTur($idBar, $idCli){
@@ -291,6 +349,50 @@ session_start();
     try {
       $h = $this->peticion->prepare("DELETE FROM turnos WHERE id_turno=:id");
       $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $res = $h->execute();
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
+
+  function newPass($id, $actual, $nueva)
+  {
+    try {
+      $h = $this->peticion->prepare("SELECT id_persona, password FROM personas WHERE  id_persona=:id AND password=:actual");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $h->bindParam(':actual', $actual, PDO::PARAM_STR);
+      $h->execute();
+      $res = $h->fetch(PDO::FETCH_OBJ);
+
+    } catch (\Exception $e) {
+
+    }
+    if ($res) {
+      try {
+        $h = $this->peticion->prepare("UPDATE personas SET password=:nueva WHERE id_persona=:id");
+        $h->bindParam(':id', $id, PDO::PARAM_INT);
+        $h->bindParam(':nueva', $nueva, PDO::PARAM_STR);
+        $res2 = $h->execute();
+      } catch (\Exception $e) {
+
+      }
+      return $res2;
+    }else {
+    //  echo "Contraseña actual incorrecta <a href='?b=perfil'>Volver</a>";
+      echo "<script language='javascript'>";
+      echo "alert('Contraseña actual incorrecta');";
+      echo "window.location.replace('?b=perfil')";
+      echo "</script>";
+    }
+    //echo "<pre>";print_r($res);echo "</pre>";
+  }
+
+  function estate_ch($id, $est){
+    try {
+      $h = $this->peticion->prepare("UPDATE personas SET estado=:est WHERE id_persona=:id");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $h->bindParam(':est', $est, PDO::PARAM_STR);
       $res = $h->execute();
     } catch (\Exception $e) {
 

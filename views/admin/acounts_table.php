@@ -21,7 +21,7 @@
 <div class="table-responsive">
   <table class="table table-bordered ">
     <thead>
-      <th>NOMBRE DE USUARIO</th><th>CORREO</th> <th>TIPO DE CUENTA</th> <th><i class="fas fa-cog"></i> </th>
+      <th>NOMBRE DE USUARIO</th><th>CORREO</th> <th>TIPO DE CUENTA</th><th>ESTADO</th> <th><i class="fas fa-cog"></i> </th>
     </thead>
     <tbody>
       <?php foreach ($res as $row): ?>
@@ -30,6 +30,15 @@
         <td><?php echo $row->nombre." ".$row->apellido; ?></td>
         <td><?php echo $row->correo; ?></td>
         <td><?php echo $row->rol_name; ?></td>
+        <td><?php  if ($row->estado==1) {
+          echo "Activo";
+          $x="Deshabilitar";
+          $y="warning";
+        }else {
+          echo "Inactivo";
+          $x="Habilitar";
+          $y="success";
+        } ?></td>
         <td>
           <!-- Modal -->
           <div class="modal fade" id="ModalSurtir<?php echo $row->id_producto;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -63,13 +72,9 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="btn btn-block btn-warning" href="?b=editar&prod=<?php echo $row->id_persona; ?>">
-                <i class="fas fa-edit"></i> Editar
+              <a class="btn btn-block btn-<?php echo $y ;?>" href="?b=editarAcount&acc=<?php echo $row->id_persona; ?>">
+                <i class="fas fa-edit"></i> <?php echo $x; ?>
               </a>
-              <a class="btn btn-block btn-danger" href="?b=delete&prod=<?php echo $row->id_persona; ?>">
-                <i class="fas fa-trash"></i> Eliminar
-              </a>
-
 
             </div>
           </div>

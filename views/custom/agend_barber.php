@@ -13,10 +13,10 @@
       <tr>
         <td><?php echo $key+1 ?></td>
         <td><?php if ($row->cliente==$_SESSION['custom'][0]->id_persona) {
-
-          echo  "YO ".$row->codigo_t;
+          $time=$key*20;
+          echo  "CODIGO DE TURNO ".$row->codigo_t."  Tiempo estimado: ".$time." min";
         }else {
-          echo "OTRO";
+          echo "USUARIO EN TURNO";
         }  ?></td>
         <td>
           <?php if ($row->cliente==$_SESSION['custom'][0]->id_persona) {

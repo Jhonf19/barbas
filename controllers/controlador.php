@@ -10,7 +10,9 @@ class Controlador
   {
     $this->o=new Modelo();
   }
-
+function home(){
+  include_once('home.php');
+}
   function index()
   {
     if (!isset($_SESSION['admin']) && !isset($_SESSION['barber']) && !isset($_SESSION['custom'])) {
@@ -21,6 +23,7 @@ class Controlador
       header("location:?b=listPub");
     }
   }
+
 
 
   function userVerify()
@@ -47,7 +50,13 @@ class Controlador
       }
 
     }else {
-        header("location:?b=index");
+      //header("location:?b=index");
+      echo "<script language='javascript'>";
+      echo "alert('Usuario y/o Contraseña incorrectos');";
+      echo "window.location.replace('?b=index')";
+      echo "</script>";
+      // $this->index();
+      // header("location:?b=index");
     }
 
   }
@@ -61,7 +70,26 @@ class Controlador
       include_once('views/layouts/head.html');
       include_once('views/layouts/header1.html');
       $res = $this->o->listPublications();
-      include_once('views/admin/pub_table.php');
+
+      if (isset($_GET['view'])) {
+        if ($_GET['view']=='muro') {
+          echo "      <div class='dropdown'>
+                <a class='btn btn-secondary dropdown-toggle' href='#' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                  Mostrar
+                </a>
+
+                <div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
+                  <a class='dropdown-item' href='?b=listPub&view=muro'>Muro</a>
+                  <a class='dropdown-item' href='?b=listPub&view=tabla'>Tabla</a>
+                </div>
+              </div>";
+          include_once('views/card_pub.php');
+        }else if ($_GET['view']=='tabla'){
+          include_once('views/admin/pub_table.php');
+        }
+      }else {
+        include_once('views/admin/pub_table.php');
+      }
       include_once('views/layouts/foot.html');
     }
     else if(isset($_SESSION['barber'])){
@@ -75,15 +103,26 @@ class Controlador
       include_once('views/layouts/head.html');
       include_once('views/layouts/header3.html');
       $res = $this->o->listPublications();
+
       include_once('views/card_pub.php');
       include_once('views/layouts/foot.html');
+    }
+  }
+  function ajax(){
+    if (isset($_SESSION['admin']) || isset($_SESSION['barber']) || isset($_SESSION['custom'])){
+      // echo "<pre>"; print_r($_POST); echo "</pre>";
+      $id=$_POST['id'];
+      $res = $this->o->listPubAjax($id);
+       echo json_encode($res);
+    }else {
+      header("location:?b=index");
     }
   }
 
   function exit() {
     // unset($_SESSION['admin']);
     session_destroy();
-    header("location:?b=index");
+    header("location:?b=home");
   }
 
   function newPub(){
@@ -91,7 +130,7 @@ class Controlador
 
       include_once('views/layouts/head.html');
       include_once('views/layouts/header1.html');
-      include_once('views/admin/new_pub.html');
+      include_once('views/admin/new_pub.php');
       include_once('views/layouts/foot.html');
 
     }else {
@@ -100,29 +139,54 @@ class Controlador
   }
   function createPub(){
     if (isset($_SESSION['admin'])){
-      if ($_FILES['url']['error']>0) {
-        echo "Ocurrió un error  <a href='?b=newPub'>Volver</a>";
-      }else {
-        // code...
+      //echo "<pre>"; print_r(count($_FILES)); echo "</pre>";
+
+      if ($_FILES["img1"]['error'] > 0 && $_FILES["img2"]['error'] > 0 && $_FILES["img3"]['error'] > 0 && $_FILES["img4"]['error'] > 0) {
+        // echo "Ocurrió un error  <a href='?b=newPub'>Volver</a>";
         // echo "<pre>"; print_r($_FILES); echo "</pre>";
+        echo "<script language='javascript'>";
+        echo "alert('Ocurrió un error al cargar los archivos');";
+        echo "window.location.replace('?b=newPub')";
+        echo "</script>";
+      }
+     else {
+
         $data = [
           'titulo'=>$_POST['titulo'],
           'texto'=>$_POST['texto'],
-          'url'=>$_FILES['url']
+          'img1'=>$_FILES["img1"]['name'],
+          'img2'=>$_FILES["img2"]['name'],
+          'img3'=>$_FILES["img3"]['name'],
+          'img4'=>$_FILES["img4"]['name']
         ];
-        if (move_uploaded_file($_FILES['url']['tmp_name'],'C:/xampp/htdocs/barbas/app/imgs_pub/'.$_FILES['url']['name'])) {
-          echo "ok";
-
-
-      $res =  $this->o->createPub($data);
-        if ($res) {
-          header("location:?b=listPub");
-        }else {
-          echo "Ocurrió un error  <a href='?b=listPub'>Volver</a>";
+        for ($i=1; $i < 5; $i++) {
+          $err=0;
+          if (!move_uploaded_file($_FILES["img$i"]['tmp_name'],'C:/xampp/htdocs/barbas/app/imgs_pub/'.$_FILES["img$i"]['name'])) {
+            $err=$err+$err;
         }
+
+        }
+
+        if ($err>0) {
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error al cargar los archivos');";
+          echo "window.location.replace('?b=newPub')";
+          echo "</script>";
       }else {
-        echo "error al cargar el archivo <a href='?b=newPub'>Volver</a>";
+        $res =  $this->o->createPub($data);
+          if ($res) {
+            header("location:?b=listPub");
+          }else {
+            echo "<script language='javascript'>";
+            echo "alert('Ocurrió un error');";
+            echo "window.location.replace('?b=newPub')";
+            echo "</script>";
+          }
       }
+
+
+
+
       }
     }else {
       header("location:?b=index");
@@ -133,13 +197,18 @@ class Controlador
   function deletePub(){
     if (isset($_SESSION['admin'])) {
       $id=$_GET['pub'];
-      $img=$_GET['img'];
-      unlink('app/imgs_pub/'.$img);
+      //$img=$_GET['img1'];
+      for ($i=1; $i < 5; $i++) {
+        unlink('app/imgs_pub/'.$_GET["img$i"]);
+      }
       $res = $this->o->deletePub($id);
       if ($res) {
         header("location:?b=listPub");
       }else {
-        echo "Ocurrió un error  <a href='?b=listPub'>Volver</a>";
+        echo "<script language='javascript'>";
+        echo "alert('Ocurrió un error');";
+        echo "window.location.replace('?b=listPub')";
+        echo "</script>";
       }
     }else {
       header("location:?b=index");
@@ -172,7 +241,10 @@ class Controlador
         if ($res) {
           header("location:?b=listPro");
         }else {
-          echo "Ocurrió un error  <a href='?b=newPro'>Volver</a>";
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error al cargar los archivos');";
+          echo "window.location.replace('?b=newPro')";
+          echo "</script>";
         }
 
       }else {
@@ -262,7 +334,10 @@ class Controlador
         $obj =  unserialize($_POST['obj']);
         $cantidad = $_POST['cantidad'];
         if ($cantidad > $obj->stock || $cantidad <= 0) {
-            echo "Por favor ingrese una cantidad valida <a href='?b=venPro'>Volver</a>";
+          echo "<script language='javascript'>";
+          echo "alert('Por favor ingrese una cantidad valida');";
+          echo "window.location.replace('?b=venPro')";
+          echo "</script>";
         }else {
           if (isset($_SESSION['mi_venta'])) {
             $equ=0;
@@ -336,21 +411,30 @@ class Controlador
     }
 
     function sell(){
-      if (isset($_SESSION['admin'])&&isset($_SESSION['mi_venta'])) {
-        foreach ($_SESSION['mi_venta'] as $key => $row) {
-          $data[]=$row;
-        }
-        // echo "<pre>";
-        // print_r($data);
-        // echo "</pre>";
+      if (isset($_SESSION['admin'])) {
+        if (isset($_SESSION['mi_venta'])) {
+          foreach ($_SESSION['mi_venta'] as $key => $row) {
+            $data[]=$row;
+          }
+          // echo "<pre>";
+          // print_r($data);
+          // echo "</pre>";
 
-        $res = $this->o->sellProducts($data);
-        if ($res) {
-          unset($_SESSION['mi_venta']);
-          header("location:?b=venPro");
+          $res = $this->o->sellProducts($data);
+          if ($res) {
+            unset($_SESSION['mi_venta']);
+            header("location:?b=venPro");
+          }else {
+            echo "<script language='javascript'>";
+            echo "alert('Ocurrió un error');";
+            echo "window.location.replace('?b=venPro')";
+            echo "</script>";
+          }
         }else {
-          echo "Ocurrió un error  <a href='?b=venPro'>Volver</a>";
+        header("location:?b=venPro");
         }
+
+
       }else {
         header("location:?b=index");
       }
@@ -363,7 +447,10 @@ class Controlador
         if ($res) {
           header("location:?b=listPro");
         }else {
-          echo "Ocurrió un error  <a href='?b=listPro'>Volver</a>";
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error');";
+          echo "window.location.replace('?b=listPro')";
+          echo "</script>";
         }
       }else {
         header("location:?b=index");
@@ -381,7 +468,10 @@ class Controlador
           include_once('views/layouts/foot.html');
 
         }else {
-          echo "Ocurrió un error  <a href='?b=listPro'>Volver</a>";
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error');";
+          echo "window.location.replace('?b=listPro')";
+          echo "</script>";
         }
       }else {
         header("location:?b=index");
@@ -401,7 +491,10 @@ class Controlador
         if ($res) {
             header("location:?b=listPro");
         }else {
-          echo "Ocurrió un error  <a href='?b=listPro'>Volver</a>";
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error');";
+          echo "window.location.replace('?b=listPro')";
+          echo "</script>";
         }
       }else {
         header("location:?b=index");
@@ -422,7 +515,10 @@ class Controlador
           header("location:?b=listPro");
 
         }else {
-          echo "Ocurrió un error  <a href='?b=listPro'>Volver</a>";
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error');";
+          echo "window.location.replace('?b=listPro')";
+          echo "</script>";
         }
       }else {
         header("location:?b=index");
@@ -458,9 +554,12 @@ class Controlador
         $res = $this->o->createPerf($data);
         // echo "<pre>"; print_r($_POST); echo "</pre>";
         if ($res) {
-          header("location:?b=listPro");
+          header("location:?b=listAcounts");
         }else {
-          echo "Ocurrió un error  <a href='?b=newPro'>Volver</a>";
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error');";
+          echo "window.location.replace('?b=listAcounts')";
+          echo "</script>";
         }
 
       }else {
@@ -476,9 +575,27 @@ class Controlador
         }
         include_once('views/layouts/head.html');
         include_once('views/layouts/header1.html');
-        $res = $this->o->listPersons($rol);
+        $res = $this->o->listPersons($rol,'');
         include_once('views/admin/acounts_table.php');
         include_once('views/layouts/foot.html');
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function editarAcount(){
+      if (isset($_SESSION['admin'])) {
+        $id=$_GET['acc'];
+        $res = $this->o->editarAcount($id);
+
+        if ($res->estado==1) {
+          $res2 = $this->o->estate_ch($res->id_persona,0);
+          header("location:?b=listAcounts");
+        }else if($res->estado==0){
+          $res2 = $this->o->estate_ch($res->id_persona,1);
+          header("location:?b=listAcounts");
+        }
 
       }else {
         header("location:?b=index");
@@ -519,12 +636,31 @@ class Controlador
       }
     }
 
+    function estate_ch(){
+      if (isset($_SESSION['barber'])) {
+        // echo "<pre>";
+        // print_r($_POST['estado']);
+        // echo "</pre>";
+        $est=$_POST['estado'];
+        $id=$_SESSION['barber'][0]->id_persona;
+        $res = $this->o->estate_ch($id, $est);
+        if ($res) {
+          $this->exit();
+        }else {
+          echo "No se pudo cambiar tu Disponibilidad <a href='?b=perfil'>Volver</a>";
+        }
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
     function agend(){
       if (isset($_SESSION['custom'])) {
 
         include_once('views/layouts/head.html');
         include_once('views/layouts/header3.html');
-        $res = $this->o->listPersons($rol=2);
+        $res = $this->o->listPersons($rol=2, $state=1);
         include_once('views/custom/agend.php');
         include_once('views/layouts/foot.html');
 
@@ -552,15 +688,21 @@ class Controlador
       if (isset($_SESSION['custom'])) {
         $valid = $this->o->listTur('',$_SESSION['custom'][0]->id_persona);
         if ($valid) {
-         echo "ya tienes un turno con ".$valid[0]->nombre ." ".$valid[0]->apellido."  <a href='?b=agend'>Volver</a>";
-
+         //echo "ya tienes un turno con ".$valid[0]->nombre ." ".$valid[0]->apellido."  <a href='?b=agend'>Volver</a>";
+         echo "<script language='javascript'>";
+         echo "alert('ya tienes un turno con ".$valid[0]->nombre." ".$valid[0]->apellido." ');";
+         echo "window.location.replace('?b=new_agend&cita=".$valid[0]->id_persona."')";
+         echo "</script>";
         }else {
 
           $res = $this->o->createTurn($_GET['cita'],$_SESSION['custom'][0]->id_persona,$ram=random_int(0, 999).$_SESSION['custom'][0]->id_persona);
           if ($res) {
-            header("location:?b=agend");
+            header("location:?b=new_agend&cita=".$_GET['cita']);
           }else {
-            echo "Error <a href='?b=agend'>Volver</a>";
+            echo "<script language='javascript'>";
+            echo "alert('Ocurrió un error');";
+            echo "window.location.replace('?b=agend')";
+            echo "</script>";
           }
         }
         // echo "<pre>";
@@ -580,13 +722,72 @@ class Controlador
 
         if ($res) {
             if (isset($_SESSION['custom'])) {
-              header("location:?b=agend");
+              echo "<script language='javascript'>";
+              echo "alert('Turno eliminado');";
+              echo "window.location.replace('?b=agend')";
+              echo "</script>";
             }else {
               header("location:?b=listcitas");
             }
         }else {
-          echo "Error <a href='?b=agend'>Volver</a>";
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un error');";
+          echo "window.location.replace('?b=agend')";
+          echo "</script>";
         }
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function perfil(){
+      if (isset($_SESSION['custom']) || isset($_SESSION['barber']) || isset($_SESSION['admin'])) {
+        if (isset($_SESSION['custom'])) {
+          include_once('views/layouts/head.html');
+          include_once('views/layouts/header3.html');
+          include_once('views/custom/perfil_custom.php');
+          include_once('views/layouts/foot.html');
+        }
+        if (isset($_SESSION['barber'])) {
+          include_once('views/layouts/head.html');
+          include_once('views/layouts/header2.html');
+          include_once('views/barber/perfil_barber.php');
+          include_once('views/layouts/foot.html');
+        }
+        if (isset($_SESSION['admin'])) {
+          include_once('views/layouts/head.html');
+          include_once('views/layouts/header1.html');
+          include_once('views/admin/perfil_admin.php');
+          include_once('views/layouts/foot.html');
+        }
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function newPass(){
+      if (isset($_SESSION['custom']) || isset($_SESSION['barber']) || isset($_SESSION['admin'])) {
+        //echo "<pre>";print_r($_POST);echo "</pre>";
+        if (isset($_SESSION['custom'])) {
+          $id=$_SESSION['custom'][0]->id_persona;
+        }
+        if (isset($_SESSION['barber'])) {
+          $id=$_SESSION['barber'][0]->id_persona;
+        }
+        if (isset($_SESSION['admin'])) {
+          $id=$_SESSION['admin'][0]->id_persona;
+        }
+        $actual=$_POST['actual'];
+        $nueva=$_POST['nueva'];
+        $res = $this->o->newPass($id, $actual, $nueva);
+        if ($res) {
+          echo "<script language='javascript'>";
+          echo "alert('Contraseña modificada, Ingresa con tus nuevos datos');";
+          echo "window.location.replace('?b=perfil')";
+          echo "</script>";
+          // $this->exit();
+        }
+
       }else {
         header("location:?b=index");
       }
