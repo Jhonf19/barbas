@@ -15,7 +15,12 @@ $(function() {
         for (var i = 0; i < result.length; i++) {
           var text1 =`
           <br>
-        <div class="card">
+        <div class="card shadow">
+        <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <h5 class="card-title">`+result[i].titulo+`</h5>
+          <p>`+result[i].fecha+`</p>
+        </div>
           <div id="carouselExampleControls`+result[i].id_publicacion+`" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
             `;
@@ -67,10 +72,12 @@ $(function() {
             <span class="sr-only">Next</span>
           </a>
         </div>
-        <div class="card-body">
-          <h5 class="card-title">`+result[i].titulo+`</h5>
-          <p class="card-text">`+result[i].texto+`</p>
-          <p>publicado: `+result[i].fecha+`</p>
+
+
+          <div class="">
+            <p class="card-text text-capitalize text-justify mt-3">`+result[i].texto+`</p>
+          </div>
+
         </div>
         </div>
       <br><br>
@@ -107,11 +114,10 @@ $(function() {
 
         for (var i = 0; i < result.length; i++) {
           var trText = `
-          <tr>  
+          <tr>
           <td>`+result[i].fecha+`</td>
           <td>`+result[i].titulo+`</td>
           <td>`+result[i].texto+`</td>
-          <td>`+result[i].img1+`</td>
           <td><a class="btn btn-danger" href="?b=deletePub&pub=`+result[i].id_publicacion+`&img1=`+result[i].img1+`&img2=`+result[i].img2+`&img3=`+result[i].img3+`&img4=`+result[i].img4+`"><i class="fas fa-trash"></i></a></td>
           </tr>
           `;

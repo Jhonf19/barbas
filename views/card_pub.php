@@ -4,7 +4,13 @@
     <div class="col-md-6 offset-md-3 col-sm-12" id="card_pub">
       <?php foreach ($res as $key => $row): ?>
     <br>
-  <div class="card">
+  <div class="card shadow">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <h5 class="card-title"><?php echo $row->titulo; ?></h5>
+        <p><?php echo $row->fecha; ?></p>
+      </div>
+
     <div id="carouselExampleControls<?php echo $key ?>" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
         <?php if ($row->img1) {?>
@@ -38,10 +44,9 @@
       </a>
     </div>
     <!-- <img class="card-img-top" src="<?php// echo 'app/imgs_pub/'.$row->img1; ?>" alt="<?php //echo $row->url_img; ?>"> -->
-    <div class="card-body">
-      <h5 class="card-title"><?php echo $row->titulo; ?></h5>
-      <p class="card-text"><?php echo $row->texto; ?></p>
-      <p>publicado: <?php echo $row->fecha; ?></p>
+    <div class="">
+      <p class="card-text text-capitalize text-justify mt-3"><?php echo $row->texto; ?></p>
+    </div>
     </div>
   </div>
 <?php endforeach; ?>

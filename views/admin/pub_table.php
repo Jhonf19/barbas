@@ -14,7 +14,7 @@
     <h2><center>Tabla de Publicaciones</center></h2>
     <table class="table table-bordered ">
       <thead>
-        <th>FECHA</th><th>TITULO</th><th>TEXTO</th><th>IMG</th><th> <i class="fas fa-cog"></i> </th>
+        <th>FECHA</th><th>TITULO</th><th>TEXTO</th><th> <i class="fas fa-cog"></i> </th>
       </thead>
       <tbody id="miTr">
         <?php foreach ($res as $row): ?>
@@ -23,11 +23,10 @@
           <td><?php echo $row->fecha; ?></td>
           <td><?php echo $row->titulo; ?></td>
           <td><?php echo $row->texto; ?></td>
-          <td><?php echo $row->img1; ?></td>
           <td><a class="btn btn-danger" href="?b=deletePub&pub=<?php echo $row->id_publicacion; ?>&img1=<?php echo $row->img1; ?>&img2=<?php echo $row->img2; ?>&img3=<?php echo $row->img3; ?>&img4=<?php echo $row->img4; ?>"><i class="fas fa-trash"></i></a></td>
         </tr>
       <?php endforeach; ?>
-  
+
       </tbody>
     </table>
   </div>
