@@ -1,6 +1,7 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-8 offset-md-2 col-sm-12 offset-sm-0 col-xs-12">
+    <div class="col-md-8 offset-md-2 col-sm-12 offset-sm-0 col-xs-12"><br><br>
+      <h2 class="text-center">Punto de Venta</h2>
       <div class="card">
         <div class="card-body">
           <h3 class="card-title"></h3>
@@ -11,8 +12,7 @@
               </div>
               <input type="text" name="id" class="form-control" placeholder="Nombre del producto" aria-label="Example text with button addon" aria-describedby="button-addon1" autofocus>
             </div>
-            <a class="btn btn-secondary" href="?b=cancelVenta">Cancelar</a>
-            <p><b>TOTAL:</b> <?php
+            <h1 class="text-right"><b> <?php
              if (isset($_SESSION['mi_venta'])){
 
                $cant_final =0;
@@ -27,12 +27,13 @@
              }else {
                echo "$0";
              }
-             ?></p>
+             ?></b></h1>
           </form>
           <form action="?b=sell" method="post">
             <button class="btn btn-success" type="submit">Vender</button>
+            <a class="btn btn-secondary" href="?b=cancelVenta">Cancelar</a>
 
-          </form>
+          </form><br>
 
           <div class="table-responsive">
             <table class="table table-bordered ">
@@ -47,7 +48,7 @@
                 <tr>
                   <td><?php echo $valor->nombre; ?></td>
                   <td><?php echo $valor->descripcion; ?></td>
-                  <td><?php echo $valor->precio; ?></td>
+                  <td><?php echo "$".$valor->precio; ?></td>
                   <td><?php echo $valor->cantidad; ?></td>
                   <td><a class="btn btn-danger" href="?b=removeCart&id=<?php echo $i; ?>"><i class="fas fa-times"></i></a></td>
                 </tr>

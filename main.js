@@ -27,7 +27,7 @@ $(function() {
         if (result[i].img1) {
           var text2 = `
           <div class="carousel-item active">
-            <img class="d-block w-100" src="app/imgs_pub/`+result[i].img1+`" alt="`+result[i].img1+`">
+            <img onclick="zoomr('app/imgs_pub/`+result[i].img1+`')" class="d-block w-100" src="app/imgs_pub/`+result[i].img1+`" alt="`+result[i].img1+`">
           </div>
           `;
         }else {
@@ -36,7 +36,7 @@ $(function() {
         if (result[i].img2) {
           var text3 = `
           <div class="carousel-item">
-            <img class="d-block w-100" src="app/imgs_pub/`+result[i].img2+`" alt="`+result[i].img2+`">
+            <img onclick="zoomr('app/imgs_pub/`+result[i].img2+`')" class="d-block w-100" src="app/imgs_pub/`+result[i].img2+`" alt="`+result[i].img2+`">
           </div>
           `;
         }else {
@@ -45,7 +45,7 @@ $(function() {
         if (result[i].img3) {
           var text4 = `
           <div class="carousel-item">
-            <img class="d-block w-100" src="app/imgs_pub/`+result[i].img3+`" alt="`+result[i].img3+`">
+            <img onclick="zoomr('app/imgs_pub/`+result[i].img3+`')" class="d-block w-100" src="app/imgs_pub/`+result[i].img3+`" alt="`+result[i].img3+`">
           </div>
           `;
         }else {
@@ -54,7 +54,7 @@ $(function() {
         if (result[i].img4) {
           var text5 = `
           <div class="carousel-item">
-            <img class="d-block w-100" src="app/imgs_pub/`+result[i].img4+`" alt="`+result[i].img4+`">
+          <img onclick="zoomr('app/imgs_pub/`+result[i].img4+`')" class="d-block w-100" src="app/imgs_pub/`+result[i].img4+`" alt="`+result[i].img4+`">
           </div>
           `;
         }else {
@@ -134,4 +134,21 @@ $(function() {
 
     });
   });
+
+  ///////////////////////////////////////////
+
 });
+  function zoom(_src) {
+    $("#zoomModal img").attr("src",_src);
+    $('#zoomModal').modal('show');
+  }
+  function zoomr(e) {
+
+      // alert("weeeeee")
+    //  var y = $(this).attr("src");
+      zoom(e);
+      //console.log(e);
+      //var xz = $("#zoomModal").attr("src");
+
+
+  }

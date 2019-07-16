@@ -11,7 +11,7 @@
     </div>
 
   <div class="table-responsive">
-    <h2><center>Tabla de Publicaciones</center></h2>
+    <h2 class="text-center">Tabla de Publicaciones</h2>
     <table class="table table-bordered ">
       <thead>
         <th>FECHA</th><th>TITULO</th><th>TEXTO</th><th> <i class="fas fa-cog"></i> </th>
@@ -30,4 +30,4 @@
       </tbody>
     </table>
   </div>
-  <button id="btn_cargar_mas_table"  name="<?php echo $row->id_publicacion; ?>" type="button" class="btn btn-secondary btn-block" >cargar mas</button>
+  <button id="btn_cargar_mas_table"  name="<?php echo $row->id_publicacion; ?>" type="button" class="btn btn-secondary" >Cargar mas</button>

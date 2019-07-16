@@ -8,7 +8,7 @@
       <tr>
         <td><?php echo $row->nombre; ?></td>
         <td><?php echo $row->descripcion; ?></td>
-        <td><?php echo $row->precio; ?></td>
+        <td><?php echo "$".$row->precio; ?></td>
         <td><?php echo $row->stock; ?></td>
         <td>
           <div class="dropdown">

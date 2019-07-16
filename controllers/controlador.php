@@ -690,7 +690,7 @@ function home(){
         if ($valid) {
          //echo "ya tienes un turno con ".$valid[0]->nombre ." ".$valid[0]->apellido."  <a href='?b=agend'>Volver</a>";
          echo "<script language='javascript'>";
-         echo "alert('ya tienes un turno con ".$valid[0]->nombre." ".$valid[0]->apellido." ');";
+         echo "alert('Ya tienes un turno con ".$valid[0]->nombre." ".$valid[0]->apellido." ');";
          echo "window.location.replace('?b=new_agend&cita=".$valid[0]->id_persona."')";
          echo "</script>";
         }else {

@@ -1,4 +1,6 @@
+<br><br>
 <div class="table-responsive">
+  <h2 class="text-center">Tabla de Productos</h2>
   <table class="table table-bordered ">
     <thead>
       <th>NOMBRE</th><th>DESCRIPCION</th><th>COSTO</th><th>PRECIO</th><th>STOCK</th><th><i class="fas fa-cog"></i> </th>
@@ -9,8 +11,8 @@
       <tr>
         <td><?php echo $row->nombre; ?></td>
         <td><?php echo $row->descripcion; ?></td>
-        <td><?php echo $row->costo; ?></td>
-        <td><?php echo $row->precio; ?></td>
+        <td><?php echo "$".$row->costo; ?></td>
+        <td><?php echo "$".$row->precio; ?></td>
         <td><?php echo $row->stock; ?></td>
         <td>
           <!-- Modal -->
