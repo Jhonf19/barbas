@@ -400,6 +400,43 @@ session_start();
     return $res;
   }
 
+  function saveImgsAD($data){
+    try {
+      $h = $this->peticion->prepare("INSERT INTO imgs_ad VALUES (NULL,:id, :img_a, :img_d) ");
+      $h->bindParam(':id', $data['id'], PDO::PARAM_INT);
+      $h->bindParam(':img_a', $data['img_a'], PDO::PARAM_STR);
+      $h->bindParam(':img_d', $data['img_d'], PDO::PARAM_STR);
+      $res =  $h->execute();
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+    // echo "<pre>";print_r($data['img_d']);echo "</pre>";
+  }
+
+  function getImgsAD($id){
+    try {
+      $h = $this->peticion->prepare("SELECT * FROM imgs_ad WHERE  id_user=:id");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $h->execute();
+      $res = $h->fetchALL(PDO::FETCH_OBJ);
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
+
+  function deleteImgsAD($id){
+    try {
+      $h = $this->peticion->prepare("DELETE FROM imgs_ad WHERE id_imgad=:id");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $res = $h->execute();
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
+
 
 
 

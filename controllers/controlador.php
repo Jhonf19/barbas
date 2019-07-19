@@ -745,6 +745,8 @@ function home(){
         if (isset($_SESSION['custom'])) {
           include_once('views/layouts/head.html');
           include_once('views/layouts/header3.html');
+          $id = $_SESSION['custom'][0]->id_persona;
+          $res = $this->o->getImgsAD($id);
           include_once('views/custom/perfil_custom.php');
           include_once('views/layouts/foot.html');
         }
@@ -760,6 +762,91 @@ function home(){
           include_once('views/admin/perfil_admin.php');
           include_once('views/layouts/foot.html');
         }
+      }else {
+        header("location:?b=index");
+      }
+    }
+    function deleteImgsAD(){
+      if (isset($_SESSION['custom'])) {
+        $id = $_GET['cd'];
+        unlink('app/imgs_ad/'.$_GET["a"]);
+        unlink('app/imgs_ad/'.$_GET["d"]);
+        $res = $this->o->deleteImgsAD($id);
+
+        if ($res) {
+          echo "<script language='javascript'>";
+          echo "alert('A/D eliminado');";
+          echo "window.location.replace('?b=perfil')";
+          echo "</script>";
+        }else {
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un Error');";
+          echo "window.location.replace('?b=perfil')";
+          echo "</script>";
+
+        }
+      }else {
+        header("location:?b=index");
+      }
+    }
+    function saveAD(){
+      if (isset($_SESSION['custom'])) {
+        echo "<pre>";
+        print_r($_FILES);
+        echo "</pre>";
+
+
+        // $ext_a = substr($_FILES['ant']['name'], -3);
+        // $ext_d = substr($_FILES['des']['name'], -3);
+        if (($_FILES['ant']['type'] != "image/jpeg" && $_FILES['ant']['type'] !="image/png" ) || ($_FILES['des']['type'] != "image/jpeg" && $_FILES['des']['type'] !="image/png" )) {
+          echo "<script language='javascript'>";
+          echo "alert('Solo puedes subir imagenes');";
+          echo "window.location.replace('?b=perfil')";
+          echo "</script>";
+        }else {
+          if (($_FILES['ant']['error']>0 || $_FILES['des']['error']>0) ) {
+            if ($_FILES['ant']['error']==1 || $_FILES['des']['error']==1) {
+              echo "<script language='javascript'>";
+              echo "alert('El tamaño del archivo supera los 8Mb');";
+              echo "window.location.replace('?b=perfil')";
+              echo "</script>";
+            }
+        }else {
+          if (move_uploaded_file($_FILES['ant']['tmp_name'],"app/imgs_ad/".$_FILES['ant']['name']) && move_uploaded_file($_FILES['des']['tmp_name'],"app/imgs_ad/".$_FILES['des']['name'])) {
+            // code...
+          $id = $_SESSION['custom'][0]->id_persona;
+          $data = [
+            'id'=>$_SESSION['custom'][0]->id_persona,
+            'img_a'=>$_FILES['ant']['name'],
+            'img_d'=>$_FILES['des']['name']
+          ];
+        $res = $this->o->saveImgsAD($data);
+        if ($res) {
+          echo "<script language='javascript'>";
+          echo "alert('A/D guardado');";
+          echo "window.location.replace('?b=perfil')";
+          echo "</script>";
+        }else {
+            echo "<script language='javascript'>";
+            echo "alert(Error al guardar los archivos');";
+            echo "window.location.replace('?b=perfil')";
+            echo "</script>";
+          }
+
+      }else {
+          echo "<script language='javascript'>";
+          echo "alert(Error al subir los archivos');";
+          echo "window.location.replace('?b=perfil')";
+          echo "</script>";
+        }
+        }
+
+        }
+
+
+        // $r = ini_get("upload_max_filesize");
+        // echo $r;
+
       }else {
         header("location:?b=index");
       }

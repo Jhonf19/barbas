@@ -20,42 +20,68 @@
 <div class="card">
   <div class="card-body">
     <h4 class="card-title">Fotos A/D</h4>
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-        <?php if ($row->img1) {?>
-        <div class="carousel-item active">
-          <img class="d-block w-100" src="<?php echo 'app/imgs_pub/'.$row->img1; ?>" alt="First slide">
-        </div>
-          <?php } ?>
-        <?php if ($row->img2) {?>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="<?php echo 'app/imgs_pub/'.$row->img2; ?>" alt="Second slide">
-        </div>
-          <?php } ?>
-        <?php if ($row->img3) {?>
-          <div class="carousel-item">
-            <img class="d-block w-100" src="<?php echo 'app/imgs_pub/'.$row->img3; ?>" alt="Third slide">
-          </div>
-      <?php } ?>
+    <?php if (isset($res) && !empty($res)){ ?>
+      <div class="row ">
+      <div class="col-md-6 offset-md-3 col-sm-12" id="card_pub">
+      <?php foreach ($res as $key => $row): ?>
+        <div class="card">
+          <div class="">
 
-      </div>
-      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
+            <a class="btn btn-danger" href="?b=deleteImgsAD&cd=<?php echo $row->id_imgad; ?>&a=<?php echo $row->img_a; ?>&d=<?php echo $row->img_d; ?>"><i class="fas fa-trash"></i></a>
+          </div>
+          <div id="carouselExampleControls<?php echo $key ?>" class="carousel slide" data-ride="carousel">
+            <div id="carouselView" class="carousel-inner">
+
+              <div class="carousel-item active" style="height: auto">
+                <img class="d-block w-100"   src="<?php echo 'app/imgs_ad/'.$row->img_a; ?>" alt="Antes">
+                <h5 class="text-center">Antes</h5>
+              </div>
+
+
+              <div class="carousel-item">
+                <img class="d-block w-100"   src="<?php echo 'app/imgs_ad/'.$row->img_d; ?>" alt="Despues">
+                <h5 class="text-center">Despues</h5>
+              </div>
+
+
+
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls<?php echo $key ?>" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls<?php echo $key ?>" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+        <br><br>
+      <?php endforeach; ?>
     </div>
-    <form action="?b=createPub" method="post" enctype="multipart/form-data">
+  </div>
+    <?php } else {
+      echo "<h2 class='text-center'>Guarda tus 3 looks favoritos aqui!</h2>";
+    } ?>
+    <div class="card">
+      <div class="card-body">
+
+    <form action="?b=saveAD" method="post" enctype="multipart/form-data">
 
 
     <div class="form-group">
-      <input type="file" class="form-control" name="nueva"  required>
+      <h5 for=""><b>Antes</b></h5>
+      <input type="file" class="form-control-file" name="ant"  accept="image/x-png,image/jpg" required>
     </div>
-    <button class="btn btn-primary" type="submit" name="button">Guardar foto</button>
+    <div class="form-group">
+      <h5 for="">Despues</h5>
+      <input type="file" class="form-control-file" name="des"  accept="image/x-png,image/jpg" required>
+    </div>
+
+    <button id="uy" class="btn btn-primary" type="submit" name="button">Guardar A/D</button>
   </form>
+</div>
+</div>
 </div>
 </div>
 </div>
