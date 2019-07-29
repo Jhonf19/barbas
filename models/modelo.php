@@ -437,6 +437,43 @@ session_start();
     return $res;
   }
 
+  function loadSetup(){
+    try {
+      $h = $this->peticion->prepare("SELECT * FROM setups");
+      $h->execute();
+      $res = $h->fetch(PDO::FETCH_OBJ);
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
+
+  function changeTheme($tema){
+    try {
+      $h = $this->peticion->prepare("UPDATE setups SET tema=:tema WHERE id_setup=1");
+      $h->bindParam(':tema', $tema, PDO::PARAM_STR);
+      $res = $h->execute();
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
+
+  function changeContentSPA($data){
+    try {
+      $h = $this->peticion->prepare("UPDATE setups SET nombre_barberia=:nombre_barberia, resena=:resena, telefono=:telefono, direccion=:direccion, horario=:horario  WHERE id_setup=1");
+      $h->bindParam(':nombre_barberia', $data['nombar'], PDO::PARAM_STR);
+      $h->bindParam(':resena', $data['resena'], PDO::PARAM_STR);
+      $h->bindParam(':telefono', $data['telefono'], PDO::PARAM_STR);
+      $h->bindParam(':direccion', $data['direccion'], PDO::PARAM_STR);
+      $h->bindParam(':horario', $data['horario'], PDO::PARAM_STR);
+      $res = $h->execute();
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
+
 
 
 

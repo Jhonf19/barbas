@@ -1,7 +1,7 @@
 <div class="table-responsive">
-  <table class="table table-bordered ">
+  <table class="table table-bordered text-center">
     <thead>
-      <th>NOMBRE</th><th>DESCRIPCION</th><th>PRECIO</th><th>STOCK</th><th> <i class="fas fa-cog"></i> </th>
+      <th>NOMBRE</th><th>DESCRIPCIÓN</th><th>PRECIO</th><th>STOCK</th><th> <i class="fas fa-cog"></i> </th>
     </thead>
     <tbody>
       <?php foreach ($res as $row): ?>
@@ -36,3 +36,4 @@
     </tbody>
   </table>
 </div>
+<br><br>

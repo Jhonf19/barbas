@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container col-md-6 offset-md-3 col-sm-12 offset-sm-0 col-xs-12">
   <br><br>
   <div class="card">
     <div class="card-body">
@@ -20,21 +20,24 @@
 <div class="card">
   <div class="card-body">
     <h4 class="card-title">Disponibilidad(<?php if ($_SESSION['barber'][0]->estado==1) {
-      echo "Laborando";
+      echo "<span class='text-muted'>Laborando</span>";
     }else{
-      echo "Auscente";
+      echo "<span class='text-muted'>Auscente</span>";
     }  ; ?>)</h4>
+    <small><i class="fas fa-info-circle"></i> Permite que los usuarios separen turnos contigo.</small>
+    <br><br><p></p>
     <form action="?b=estate_ch" method="post" id="ufg">
     <div class="form-group">
-      <select class="form-control" form="ufg" name="estado">
+      <select class="form-control" form="ufg" name="estado" required>
         <option selected>Seleccione un Estado</option>
         <option value="1">Laborando</option>
         <option value="0">Auscente</option>
       </select>
     </div>
 
-    <button class="btn btn-primary" type="submit" name="button">Guardar foto</button>
+    <button class="btn btn-primary" type="submit" name="button">Cambiar</button>
   </form>
 </div>
 </div>
 </div>
+<br><br>

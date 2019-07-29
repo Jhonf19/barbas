@@ -38,7 +38,7 @@
           <div class="table-responsive">
             <table class="table table-bordered ">
               <thead>
-                <th>NOMBRE</th><th>DESCRIPCION</th><th>PRECIO</th><th>CANTIDAD</th><th> <i class="fas fa-cog"></i> </th>
+                <th>NOMBRE</th><th>DESCRIPCIÓN</th><th>PRECIO</th><th>CANTIDAD</th><th> <i class="fas fa-cog"></i> </th>
               </thead>
               <tbody>
                 <?php if (isset($_SESSION['mi_venta'])): ?>

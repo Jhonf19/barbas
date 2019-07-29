@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-12 offset-sm-0 col-xs-12">
   <br><br>
   <div class="card">
     <div class="card-body">
-      <h3 class="card-title">Login</h3>
+      <h3 class="card-title">Iniciar Sesión</h3>
 
       <form action="?b=userVerify" method="post">
 
@@ -19,3 +19,4 @@
     </div>
   </div>
 </div>
+<br><br>

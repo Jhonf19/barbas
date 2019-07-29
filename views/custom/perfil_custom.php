@@ -20,6 +20,7 @@
 <div class="card">
   <div class="card-body">
     <h4 class="card-title">Fotos A/D</h4>
+    <p>Crea un Antes/Después de tus cortes de cabello favoritos!</p><small><i class="fas fa-info-circle"></i> Puedes crear 3 A/D</small><hr>
     <?php if (isset($res) && !empty($res)){ ?>
       <div class="row ">
       <div class="col-md-6 offset-md-3 col-sm-12" id="card_pub">
@@ -27,7 +28,7 @@
         <div class="card">
           <div class="">
 
-            <a class="btn btn-danger" href="?b=deleteImgsAD&cd=<?php echo $row->id_imgad; ?>&a=<?php echo $row->img_a; ?>&d=<?php echo $row->img_d; ?>"><i class="fas fa-trash"></i></a>
+            <a id="btnDeleteAD<?php echo $key; ?>" class="btn btn-danger" href="?b=deleteImgsAD&cd=<?php echo $row->id_imgad; ?>&a=<?php echo $row->img_a; ?>&d=<?php echo $row->img_d; ?>"><i class="fas fa-trash"></i></a>
           </div>
           <div id="carouselExampleControls<?php echo $key ?>" class="carousel slide" data-ride="carousel">
             <div id="carouselView" class="carousel-inner">
@@ -40,7 +41,7 @@
 
               <div class="carousel-item">
                 <img class="d-block w-100"   src="<?php echo 'app/imgs_ad/'.$row->img_d; ?>" alt="Despues">
-                <h5 class="text-center">Despues</h5>
+                <h5 class="text-center">Después</h5>
               </div>
 
 
@@ -61,27 +62,17 @@
     </div>
   </div>
     <?php } else {
-      echo "<h2 class='text-center'>Guarda tus 3 looks favoritos aqui!</h2>";
+      echo "<h2 class='text-center'>Ningún A/D creado</h2>";
     } ?>
+    <hr>
     <div class="card">
       <div class="card-body">
 
-    <form action="?b=saveAD" method="post" enctype="multipart/form-data">
+        <a class="btn btn-primary btn-block" href="?b=addAD">Crear A/D</a>
 
-
-    <div class="form-group">
-      <h5 for=""><b>Antes</b></h5>
-      <input type="file" class="form-control-file" name="ant"  accept="image/x-png,image/jpg" required>
-    </div>
-    <div class="form-group">
-      <h5 for="">Despues</h5>
-      <input type="file" class="form-control-file" name="des"  accept="image/x-png,image/jpg" required>
-    </div>
-
-    <button id="uy" class="btn btn-primary" type="submit" name="button">Guardar A/D</button>
-  </form>
 </div>
 </div>
 </div>
 </div>
 </div>
+<br><br>

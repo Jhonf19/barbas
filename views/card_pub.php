@@ -22,7 +22,7 @@
     <div class="card-body">
       <div class="d-flex justify-content-between">
         <h5 class="card-title"><?php echo $row->titulo; ?></h5>
-        <p><?php echo $row->fecha; ?></p>
+        <p><?php echo  substr($row->fecha, 0, 10) ; ?></p>
       </div>
 
     <div id="carouselExampleControls<?php echo $key ?>" class="carousel slide" data-ride="carousel">
@@ -73,9 +73,9 @@
 <div class="col-md-6 offset-md-3 col-sm-12">
 <div class="card">
 
-  <button id="btn_cargar_mas"  name="<?php echo $row->id_publicacion; ?>" type="button" class="btn btn-secondary btn-block" >Cargar mas</button>
+  <button id="btn_cargar_mas"  name="<?php echo $row->id_publicacion; ?>" type="button" class="btn btn-secondary btn-block" >Cargar más</button>
 </div>
 </div>
-</div><br>
+</div><br><br>
 </div>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>

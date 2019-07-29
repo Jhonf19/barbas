@@ -8,14 +8,14 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <!-- Icons -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-
+  <link id="homeTheme" rel="stylesheet" href="">
 </head>
 <body>
 <br><br>
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">Mi Barberia</a>
+      <a class="navbar-brand" href="#"><?php echo $res->nombre_barberia; ?></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -27,13 +27,19 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Servicios</a>
+            <a class="nav-link" href="#servicios">Servicios</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Contactos</a>
+            <a class="nav-link" href="#contactos">Contactos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="?b=index">Ingresar</a>
+            <?php
+            if (isset($_SESSION['admin'])) {
+              echo "<a class='nav-link' href='?b=perfil'>Perfil</a>";
+            }else {
+              echo "<a class='nav-link' href='?b=index'>Ingresar</a>";
+            }
+             ?>
           </li>
         </ul>
       </div>
@@ -46,13 +52,13 @@
     <!-- Heading Row -->
     <div class="row align-items-center my-5">
       <div class="col-lg-7">
-        <img class="img-fluid rounded mb-4 mb-lg-0" src="http://placehold.it/900x400" alt="">
+        <img class="img-fluid rounded mb-4 mb-lg-0" src="<?php echo $res->img_post; ?>" alt="">
       </div>
       <!-- /.col-lg-8 -->
       <div class="col-lg-5">
-        <h1 class="font-weight-light">Mi Barberia</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore</p>
-        <a class="btn btn-primary" href="#">Call to Action!</a>
+        <h1 class="font-weight-light"><?php echo $res->nombre_barberia; ?></h1>
+        <p><?php echo $res->resena; ?></p>
+        <hr>
       </div>
       <!-- /.col-md-4 -->
     </div>
@@ -61,20 +67,20 @@
     <!-- Call to Action Well -->
     <div class="card text-white bg-secondary my-5 py-4 text-center">
       <div class="card-body">
-        <p class="text-white m-0">This call to action card is a great place to showcase some important information or display a clever tagline!</p>
+        <p class="text-white m-0">¿Quieres poder reservar nuestros servicios<b> online</b>?¡Solicita una cuenta gratis!</p>
       </div>
     </div>
 
     <!-- Content Row -->
-    <div class="row">
+    <div id="servicios" class="row">
       <div class="col-md-4 mb-5">
         <div class="card h-100">
           <div class="card-body">
-            <h2 class="card-title">Card One</h2>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
+            <h2 class="card-title text-center">Servicio 1</h2>
+            <p class="card-text">Describe un servicio y proporciona detalles de interés acerca del mismo.</p>
           </div>
           <div class="card-footer">
-            <a href="#" class="btn btn-primary btn-sm">More Info</a>
+            <a href="#" class="btn btn-primary btn-sm">Más</a>
           </div>
         </div>
       </div>
@@ -82,11 +88,11 @@
       <div class="col-md-4 mb-5">
         <div class="card h-100">
           <div class="card-body">
-            <h2 class="card-title">Card Two</h2>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.</p>
+            <h2 class="card-title text-center">Servicio 2</h2>
+            <p class="card-text">Describe un servicio y proporciona detalles de interés acerca del mismo.</p>
           </div>
           <div class="card-footer">
-            <a href="#" class="btn btn-primary btn-sm">More Info</a>
+            <a href="#" class="btn btn-primary btn-sm">Más</a>
           </div>
         </div>
       </div>
@@ -94,11 +100,11 @@
       <div class="col-md-4 mb-5">
         <div class="card h-100">
           <div class="card-body">
-            <h2 class="card-title">Card Three</h2>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
+            <h2 class="card-title text-center">Servicio 3</h2>
+            <p class="card-text">Describe un servicio y proporciona detalles de interés acerca del mismo.</p>
           </div>
           <div class="card-footer">
-            <a href="#" class="btn btn-primary btn-sm">More Info</a>
+            <a href="#" class="btn btn-primary btn-sm">Más</a>
           </div>
         </div>
       </div>
@@ -111,10 +117,21 @@
   <!-- /.container -->
 
   <!-- Footer -->
-  <footer class="py-5 bg-dark">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
-    </div>
+  <footer id="contactos" class="py-5 bg-dark">
+    <div class="container text-white text-center  ">
+      <div class="row">
+        <div class="col-lg-4">
+          <h5><span><i class="fab fa-whatsapp"></i></span> <?php echo $res->telefono; ?></h5>
+        </div>
+        <div class="col-lg-4">
+          <h5><span><i class="fas fa-map-marker-alt"></i></span> <?php echo $res->direccion; ?></h5>
+        </div>
+        <div class="col-lg-4">
+        <h5><span><i class="far fa-clock"></i></span> <?php echo $res->horario; ?></h5>
+        </div>
+      </div>
+    </div><br>
+    <p class="text-center text-white">Copyright &copy; 2019</p>
     <!-- /.container -->
   </footer>
 

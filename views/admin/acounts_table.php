@@ -17,9 +17,9 @@
   </div>
 </div>
 <hr>
-<center><h2>Cuentas de usuario</h2></center>
+<h3 class="text-center">Cuentas de usuario</h3>
 <div class="table-responsive">
-  <table class="table table-bordered ">
+  <table class="table table-bordered text-center">
     <thead>
       <th>NOMBRE DE USUARIO</th><th>CORREO</th> <th>TIPO DE CUENTA</th><th>ESTADO</th> <th><i class="fas fa-cog"></i> </th>
     </thead>

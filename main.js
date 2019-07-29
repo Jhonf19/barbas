@@ -19,7 +19,7 @@ $(function() {
         <div class="card-body">
         <div class="d-flex justify-content-between">
           <h5 class="card-title">`+result[i].titulo+`</h5>
-          <p>`+result[i].fecha+`</p>
+          <p>`+result[i].fecha.substr(0, 10)+`</p>
         </div>
           <div id="carouselExampleControls`+result[i].id_publicacion+`" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
@@ -135,9 +135,71 @@ $(function() {
     });
   });
 
-  ///////////////////////////////////////////
+
+
+
+///////////////////////////////////////////
+
+
 
 });
+// buttons confirm
+
+if (document.getElementById("btnCancelTurn")) {
+  document.getElementById("btnCancelTurn").addEventListener("click",function(evt){
+      var tr = confirm("¿Desea eliminar su Turno?");
+      if (!tr) {
+
+      evt.preventDefault();
+      }
+
+      });
+}
+if (document.getElementById("btnDeleteAD0")) {
+  document.getElementById("btnDeleteAD0").addEventListener("click",function(evt){
+      var tr = confirm("¿Desea eliminar este A/D?");
+      if (!tr) {
+
+      evt.preventDefault();
+      }
+
+      });
+}
+
+if (document.getElementById("btnDeleteAD1")) {
+  document.getElementById("btnDeleteAD1").addEventListener("click",function(evt){
+      var tr = confirm("¿Desea eliminar este A/D?");
+      if (!tr) {
+
+      evt.preventDefault();
+      }
+
+      });
+}
+
+if (document.getElementById("btnDeleteAD2")) {
+  document.getElementById("btnDeleteAD2").addEventListener("click",function(evt){
+      var tr = confirm("¿Desea eliminar este A/D?");
+      if (!tr) {
+
+      evt.preventDefault();
+      }
+
+      });
+}
+
+if (document.getElementById("btnFinishTurn")) {
+  document.getElementById("btnFinishTurn").addEventListener("click",function(evt){
+      var tr = confirm("¿Desea finalizar este turno?");
+      if (!tr) {
+
+      evt.preventDefault();
+      }
+
+      });
+}
+
+
   function zoom(_src) {
     $("#zoomModal img").attr("src",_src);
     $('#zoomModal').modal('show');
