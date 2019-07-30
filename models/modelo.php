@@ -13,7 +13,7 @@ session_start();
   {
     try {
       // $this->peticion->query("SET NAMES 'utf8'");
-      $h = $this->peticion->prepare("SELECT * FROM personas WHERE nombre=:user AND password=:pass");
+      $h = $this->peticion->prepare("SELECT id_persona, documento, nombre, apellido, correo, rol, estado FROM personas WHERE nombre=:user AND password=:pass AND estado=1");
       $h->bindParam(':user', $data['user'], PDO::PARAM_STR);
       $h->bindParam(':pass', $data['pass'], PDO::PARAM_STR);
       $h->execute();

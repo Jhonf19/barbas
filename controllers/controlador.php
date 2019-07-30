@@ -42,7 +42,7 @@ class Controlador
 
   function changeContentSPA(){
   if (isset($_SESSION['admin'])) {
-    echo "<pre>";print_r($_FILES);echo "</pre>";
+
     $data=[
       'nombar'=>$_POST['nombar'],
       'resena'=>$_POST['resena'],
@@ -57,16 +57,15 @@ class Controlador
         echo "window.location.replace('?b=perfil')";
         echo "</script>";
       }
-        if (!move_uploaded_file($_FILES["img_post"]['tmp_name'],'C:/xampp/htdocs/barbas/setup/'.'900x400.png')) {
+        if (!move_uploaded_file($_FILES["img_post"]['tmp_name'],'setup/'.'900x400.png')) {
           echo "<script language='javascript'>";
           echo "alert('No se pudo cambiar la imagen');";
           echo "window.location.replace('?b=perfil')";
           echo "</script>";
         }
-        //move_uploaded_file($_FILES["img_post"]['tmp_name'],'C:/xampp/htdocs/barbas/setup/'.'900x400.png');
 
     }
-      //
+
       $res = $this->o->changeContentSPA($data);
 
       if ($res) {
@@ -82,10 +81,6 @@ class Controlador
       }
 
 
-
-    // $tema = $_POST['tema'];
-    // $res = $this->o->changeTheme($tema);
-    // header("location:?b=perfil");
   }else {
     header("location:?b=index");
   }
@@ -279,7 +274,7 @@ class Controlador
         ];
         for ($i=1; $i < 5; $i++) {
           $err=0;
-          if (!move_uploaded_file($_FILES["img$i"]['tmp_name'],'C:/xampp/htdocs/barbas/app/imgs_pub/'.$_FILES["img$i"]['name'])) {
+          if (!move_uploaded_file($_FILES["img$i"]['tmp_name'],'app/imgs_pub/'.$_FILES["img$i"]['name'])) {
             $err=$err+$err;
         }
 
@@ -314,6 +309,8 @@ class Controlador
 
   function deletePub(){
     if (isset($_SESSION['admin'])) {
+      //just for the host
+       error_reporting(E_ALL ^ E_WARNING );
       $id=$_GET['pub'];
       //$img=$_GET['img1'];
       for ($i=1; $i < 5; $i++) {
@@ -343,7 +340,7 @@ class Controlador
         }else {
           $tema = "no";
         }
-        include_once('T');
+        include_once('views/layouts/head.php');
         include_once('views/layouts/header1.html');
         include_once('views/admin/new_pro.html');
         include_once('views/layouts/foot.html');
@@ -751,14 +748,28 @@ class Controlador
     function editarAcount(){
       if (isset($_SESSION['admin'])) {
         $id=$_GET['acc'];
+        $list=$_GET['list'];
         $res = $this->o->editarAcount($id);
 
         if ($res->estado==1) {
           $res2 = $this->o->estate_ch($res->id_persona,0);
-          header("location:?b=listAcounts");
+          if (!empty($list)) {
+            // code...
+            header("location:?b=listAcounts&list=".$list);
+          }else {
+            // code...
+            header("location:?b=listAcounts");
+          }
         }else if($res->estado==0){
           $res2 = $this->o->estate_ch($res->id_persona,1);
-          header("location:?b=listAcounts");
+          if (!empty($list)) {
+            // code...
+            header("location:?b=listAcounts&list=".$list);
+          }else {
+            // code...
+            header("location:?b=listAcounts");
+          }
+
         }
 
       }else {
