@@ -14,17 +14,14 @@ class Controlador
 
   function home(){
 
-
-
       $res = $this->o->loadSetup();
+      $res2 = $this->o->listServices();
       include_once('home.php');
       if ($res) {
         $tema = $res->tema;
       }else {
         $tema = "no";
     }
-
-
 
   }
 
@@ -39,6 +36,54 @@ class Controlador
   }
 
   }
+
+  function addService(){
+  if (isset($_SESSION['admin'])) {
+    // echo "<pre>";print_r($_POST['tema']);echo "</pre>";
+    $servicio = $_POST['servicio'];
+    $precio = $_POST['precio'];
+    $res = $this->o->addService($servicio, $precio);
+    if ($res) {
+      echo "<script language='javascript'>";
+      echo "alert('Servicio agregado');";
+      echo "window.location.replace('?b=home#servicios')";
+      echo "</script>";
+    }else {
+      echo "<script language='javascript'>";
+      echo "alert('Error, no se pudo agregar el servicio');";
+      echo "window.location.replace('?b=perfil')";
+      echo "</script>";
+    }
+
+  }else {
+    header("location:?b=index");
+  }
+
+  }
+
+  function deleteService(){
+  if (isset($_SESSION['admin'])) {
+    // echo "<pre>";print_r($_POST['tema']);echo "</pre>";
+    $id = $_GET['x'];
+    $res = $this->o->deleteService($id);
+    if ($res) {
+      echo "<script language='javascript'>";
+      echo "alert('Servicio eliminado');";
+      echo "window.location.replace('?b=home#servicios')";
+      echo "</script>";
+    }else {
+      echo "<script language='javascript'>";
+      echo "alert('Error, no se pudo eliminar el servicio');";
+      echo "window.location.replace('?b=perfil')";
+      echo "</script>";
+    }
+
+  }else {
+    header("location:?b=index");
+  }
+
+  }
+
 
   function changeContentSPA(){
   if (isset($_SESSION['admin'])) {

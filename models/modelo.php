@@ -474,6 +474,41 @@ session_start();
     return $res;
   }
 
+  function addService($servicio, $precio){
+    try {
+      $h = $this->peticion->prepare("INSERT INTO servicios VALUES (NULL, :servicio, :precio) ");
+      $h->bindParam(':servicio', $servicio, PDO::PARAM_STR);
+      $h->bindParam(':precio', $precio, PDO::PARAM_STR);
+      $res =  $h->execute();
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+    // echo "<pre>";print_r($data['img_d']);echo "</pre>";
+  }
+
+  function listServices(){
+    try {
+      $h = $this->peticion->prepare("SELECT * FROM servicios");
+      $h->execute();
+      $res = $h->fetchALL(PDO::FETCH_OBJ);
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
+
+  function deleteService($id){
+    try {
+      $h = $this->peticion->prepare("DELETE FROM servicios WHERE id_servicio=:id");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $res = $h->execute();
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+  }
+
 
 
 

@@ -31,7 +31,7 @@
             <div class="form-group">
               <select class="form-control" form="fnb2" name="tema">
                 <option selected>Seleccione un Tema</option>
-                <option value="nomrmal">Normal</option>
+                <option value="light">Normal</option>
                 <option value="dark">Nocturno</option>
                 <option value="3">otro</option>
               </select>
@@ -48,7 +48,7 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Configurar Pagina de Inicio</h4>
-        <a href="?b=home">Ir a la pagina de inicio</a><br>
+        <a href="?b=home">Ir a la pagina de inicio</a><hr>
         <form action="?b=changeContentSPA" method="post" enctype="multipart/form-data">
 
           <div class="row">
@@ -106,7 +106,9 @@
                 </div>
               </div>
             </div>
-            <br>
+          </div>
+          <br>
+          <div class="row">
             <div class="col-md-6">
               <div class="card">
                 <div class="card-body">
@@ -130,11 +132,32 @@
 
           </div>
 
-
-          <button class="btn btn-primary" type="submit" name="button">Guardar Cambios</button>
+          <br>
+          <button class="btn btn-primary" type="submit" name="button">Guardar Configuración</button>
       </form>
     </div>
     </div>
   </div>
 </div>
+<br>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Agregar Servicios</h5>
+        <a href="?b=home#servicios">Ir a la pagina de inicio</a><hr>
+        <form action="?b=addService" method="post">
+          <div class="form-group">
+            <input type="text" class="form-control" name="servicio" placeholder="Nombre" required>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="precio" placeholder="Precio" required>
+          </div>
+          <br>
+          <button class="btn btn-primary" type="submit" name="button">Guardar Servicio</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
+</div><br><br>

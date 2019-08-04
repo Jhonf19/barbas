@@ -1,3 +1,25 @@
 body{
   background-color: black;
+  color: white;
+}
+
+
+
+.card{
+background-color: black;
+color : white;
+border : 1px solid white;
+}
+
+.form-control{
+  background-color: black;
+
+}
+.form-control:focus {
+  background-color: black;
+  color: white;
+}
+
+.table{
+  color: white;
 }

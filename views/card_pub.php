@@ -71,7 +71,7 @@
 </div>
 <div class="row ">
 <div class="col-md-6 offset-md-3 col-sm-12">
-<div class="card">
+<div class="">
 
   <button id="btn_cargar_mas"  name="<?php echo $row->id_publicacion; ?>" type="button" class="btn btn-secondary btn-block" >Cargar más</button>
 </div>

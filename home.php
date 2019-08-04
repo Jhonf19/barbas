@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <!-- Icons -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-  <link id="homeTheme" rel="stylesheet" href="">
+  <link id="homeTheme" rel="stylesheet" href="setup/themes/normal.css">
 </head>
 <body>
 <br><br>
@@ -26,13 +26,13 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="#servicios">Servicios</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="#contactos">Contactos</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <?php
             if (isset($_SESSION['admin'])) {
               echo "<a class='nav-link' href='?b=perfil'>Perfil</a>";
@@ -65,59 +65,66 @@
     <!-- /.row -->
 
     <!-- Call to Action Well -->
-    <div class="card text-white bg-secondary my-5 py-4 text-center">
+    <div class="card banner my-5 py-4 text-center">
       <div class="card-body">
-        <p class="text-white m-0">¿Quieres poder reservar nuestros servicios<b> online</b>?¡Solicita una cuenta gratis!</p>
+        <h5 class=" m-0">¿Quieres poder reservar nuestros servicios<b> online</b>?¡Solicita una cuenta gratis!</h5>
       </div>
     </div>
 
     <!-- Content Row -->
-    <div id="servicios" class="row">
-      <div class="col-md-4 mb-5">
-        <div class="card h-100">
-          <div class="card-body">
-            <h2 class="card-title text-center">Servicio 1</h2>
-            <p class="card-text">Describe un servicio y proporciona detalles de interés acerca del mismo.</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary btn-sm">Más</a>
-          </div>
-        </div>
-      </div>
-      <!-- /.col-md-4 -->
-      <div class="col-md-4 mb-5">
-        <div class="card h-100">
-          <div class="card-body">
-            <h2 class="card-title text-center">Servicio 2</h2>
-            <p class="card-text">Describe un servicio y proporciona detalles de interés acerca del mismo.</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary btn-sm">Más</a>
-          </div>
-        </div>
-      </div>
-      <!-- /.col-md-4 -->
-      <div class="col-md-4 mb-5">
-        <div class="card h-100">
-          <div class="card-body">
-            <h2 class="card-title text-center">Servicio 3</h2>
-            <p class="card-text">Describe un servicio y proporciona detalles de interés acerca del mismo.</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary btn-sm">Más</a>
-          </div>
-        </div>
-      </div>
-      <!-- /.col-md-4 -->
+<div id="servicios">
+  <h1 class="text-center">Servicios</h1>
+  <div class="row">
+    <div class="col-md-8 offset-md-2 col-sm-12">
+
+        <ul class="list-group">
+          <?php if (!empty($res2)): ?>
+            <?php if (isset($_SESSION['admin'])): ?>
+              <?php foreach ($res2 as $key => $row2): ?>
+              <li class="d-flex list-group-item justify-content-between">
+                <div class="">
+                  <?php echo $row2->nombre_servicio; ?>
+                </div>
+                <div class="">
+                  <?php echo "$".$row2->costo_servicio; ?>
+                  <a class="text-danger" href="?b=deleteService&x=<?php echo $row2->id_servicio; ?>"> <i class="fas fa-trash"></i></a>
+                </div>
+              </li>
+            <?php endforeach; ?>
+            <?php else: ?>
+              <?php foreach ($res2 as $key => $row2): ?>
+              <li class="d-flex list-group-item justify-content-between">
+                <div class="">
+                  <?php echo $row2->nombre_servicio; ?>
+                </div>
+                <div class="">
+                  <?php echo "$".$row2->costo_servicio; ?>
+                </div>
+              </li>
+            <?php endforeach; ?>
+            <?php endif; ?>
+          <?php else: ?>
+            <li class="d-flex list-group-item justify-content-between">
+              <div class="">
+                Servicio
+              </div>
+              <div class="">
+                $0
+              </div>
+            </li>
+          <?php endif; ?>
+        </ul>
 
     </div>
+  </div><br>
+</div>
     <!-- /.row -->
 
   </div>
   <!-- /.container -->
 
   <!-- Footer -->
-  <footer id="contactos" class="py-5 bg-dark">
+  <footer id="contactos" class="py-5">
     <div class="container text-white text-center  ">
       <div class="row">
         <div class="col-lg-4">
