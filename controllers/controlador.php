@@ -890,6 +890,29 @@ class Controlador
       }
     }
 
+    function cita(){
+      if (isset($_SESSION['custom'])) {
+        include_once('views/layouts/head.php');
+        include_once('views/layouts/header3.html');
+        if (isset($_POST['fecha'])) {
+          $data=[
+            'dia'=>substr($_POST['fecha'],8,2),
+            'mes'=>substr($_POST['fecha'],5,2),
+            'anio'=>substr($_POST['fecha'],0,4),
+            'barbero'=>2
+          ];
+          $res = $this->o->listCitas($data);
+        }
+        include_once('views/custom/calendar.php');
+        include_once('views/custom/calendarTable.php');
+        include_once('views/layouts/foot.html');
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+
+
     function agend(){
       if (isset($_SESSION['custom'])) {
         $resT = $this->o->loadSetup();

@@ -509,6 +509,24 @@ session_start();
     return $res;
   }
 
+  function listCitas($data){
+    try {
+      $h = $this->peticion->prepare("SELECT * FROM citas WHERE dia=:dia AND mes=:mes AND anio=:anio AND barbero=:barbero");
+      $h->bindParam(':dia', $data['dia'], PDO::PARAM_STR);
+      $h->bindParam(':mes', $data['mes'], PDO::PARAM_STR);
+      $h->bindParam(':anio', $data['anio'], PDO::PARAM_STR);
+      $h->bindParam(':barbero', $data['barbero'], PDO::PARAM_INT);
+
+      $h->execute();
+      $res = $h->fetchALL(PDO::FETCH_OBJ);
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+    // echo "<pre>";print_r($res);echo "</pre>";
+
+  }
+
 
 
 
