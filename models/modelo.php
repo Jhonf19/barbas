@@ -461,12 +461,13 @@ session_start();
 
   function changeContentSPA($data){
     try {
-      $h = $this->peticion->prepare("UPDATE setups SET nombre_barberia=:nombre_barberia, resena=:resena, telefono=:telefono, direccion=:direccion, horario=:horario  WHERE id_setup=1");
+      $h = $this->peticion->prepare("UPDATE setups SET nombre_barberia=:nombre_barberia, resena=:resena, telefono=:telefono, direccion=:direccion, h_apertura=:h_apertura, h_cierre=:h_cierre  WHERE id_setup=1");
       $h->bindParam(':nombre_barberia', $data['nombar'], PDO::PARAM_STR);
       $h->bindParam(':resena', $data['resena'], PDO::PARAM_STR);
       $h->bindParam(':telefono', $data['telefono'], PDO::PARAM_STR);
       $h->bindParam(':direccion', $data['direccion'], PDO::PARAM_STR);
-      $h->bindParam(':horario', $data['horario'], PDO::PARAM_STR);
+      $h->bindParam(':h_apertura', $data['h_apertura'], PDO::PARAM_STR);
+      $h->bindParam(':h_cierre', $data['h_cierre'], PDO::PARAM_STR);
       $res = $h->execute();
     } catch (\Exception $e) {
 
@@ -511,14 +512,14 @@ session_start();
 
   function listCitas($data){
     try {
-      $h = $this->peticion->prepare("SELECT * FROM citas WHERE dia=:dia AND mes=:mes AND anio=:anio AND barbero=:barbero");
+      $h = $this->peticion->prepare("SELECT hora FROM citas WHERE dia=:dia AND mes=:mes AND anio=:anio AND barbero=:barbero");
       $h->bindParam(':dia', $data['dia'], PDO::PARAM_STR);
       $h->bindParam(':mes', $data['mes'], PDO::PARAM_STR);
       $h->bindParam(':anio', $data['anio'], PDO::PARAM_STR);
       $h->bindParam(':barbero', $data['barbero'], PDO::PARAM_INT);
 
       $h->execute();
-      $res = $h->fetchALL(PDO::FETCH_OBJ);
+      $res = $h->fetchALL(PDO::FETCH_COLUMN);
     } catch (\Exception $e) {
 
     }

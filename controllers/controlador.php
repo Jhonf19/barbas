@@ -93,7 +93,8 @@ class Controlador
       'resena'=>$_POST['resena'],
       'telefono'=>$_POST['telefono'],
       'direccion'=>$_POST['direccion'],
-      'horario'=>$_POST['horario']
+      'h_apertura'=>$_POST['h_apertura'],
+      'h_cierre'=>$_POST['h_cierre']
     ];
     if (!empty($_FILES['img_post']['name'])) {
       if ($_FILES["img_post"]['error']==1) {
@@ -892,6 +893,26 @@ class Controlador
 
     function cita(){
       if (isset($_SESSION['custom'])) {
+          $res = $this->o->loadSetup();
+          $a=substr((int)$res->h_apertura,0,2);
+          $b=substr((int)$res->h_cierre,0,2);
+          $x = (12 - $a) + $b;
+          $horas = array();
+          $m="am";
+          for ($i=0; $i < $x; $i++) {
+            array_push($horas,$a.$m);
+            $a=$a+1;
+            if ($a>11) {
+
+              $m="pm";
+              if ($a>12) {
+                  $a=1;
+              }
+            }
+          }
+           // echo "<pre>";print_r($horas);echo "</pre>";
+
+
         include_once('views/layouts/head.php');
         include_once('views/layouts/header3.html');
         if (isset($_POST['fecha'])) {
@@ -901,7 +922,7 @@ class Controlador
             'anio'=>substr($_POST['fecha'],0,4),
             'barbero'=>2
           ];
-          $res = $this->o->listCitas($data);
+          $res2 = $this->o->listCitas($data);
         }
         include_once('views/custom/calendar.php');
         include_once('views/custom/calendarTable.php');

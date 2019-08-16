@@ -134,7 +134,8 @@
           <h5><span><i class="fas fa-map-marker-alt"></i></span> <?php echo $res->direccion; ?></h5>
         </div>
         <div class="col-lg-4">
-        <h5><span><i class="far fa-clock"></i></span> <?php echo $res->horario; ?></h5>
+        <h5><span><i class="far fa-clock"></i></span> De <?php $hoa1=substr($res->h_apertura,0,-2); $hoa2=substr($res->h_apertura,-2); echo $hoa1.":00".$hoa2;?></h5>
+        <h5>a <?php $hoc1=substr($res->h_cierre,0,-2); $hoc2=substr($res->h_cierre,-2); echo $hoc1.":00".$hoc2; ?></h5>
         </div>
       </div>
     </div><br>

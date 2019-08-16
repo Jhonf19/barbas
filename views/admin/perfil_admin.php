@@ -124,7 +124,66 @@
                 <div class="card-body">
                   <h5 class="card-title">Horario</h5>
                   <div class="form-group">
-                    <input type="text" class="form-control" name="horario" value="<?php echo $resT->horario; ?>"  >
+                    <label>Apertura</label>
+                    <select class="custom-select" name="h_apertura">
+                      <option value="<?php echo $resT->h_apertura; ?>" selected><?php $ha1=substr($resT->h_apertura,0,-2); $ha2=substr($resT->h_apertura,-2); echo $ha1.":00".$ha2; ?></option>
+                      <option value="12am">12:00am</option>
+                      <option value="1am">1:00am</option>
+                      <option value="2am">2:00am</option>
+                      <option value="3am">3:00am</option>
+                      <option value="4am">4:00am</option>
+                      <option value="5am">5:00am</option>
+                      <option value="6am">6:00am</option>
+                      <option value="7am">7:00am</option>
+                      <option value="8am">8:00am</option>
+                      <option value="9am">9:00am</option>
+                      <option value="10am">10:00am</option>
+                      <option value="11am">11:00am</option>
+                      <option value="12pm">12:00pm</option>
+                      <option value="1pm">1:00pm</option>
+                      <option value="2pm">2:00pm</option>
+                      <option value="3pm">3:00pm</option>
+                      <option value="4pm">4:00pm</option>
+                      <option value="5pm">5:00pm</option>
+                      <option value="6pm">6:00pm</option>
+                      <option value="7pm">7:00pm</option>
+                      <option value="8pm">8:00pm</option>
+                      <option value="9pm">9:00pm</option>
+                      <option value="10pm">10:00pm</option>
+                      <option value="11pm">11:00pm</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Cierre</label>
+                    <div class="form-group">
+                      <select class="custom-select" name="h_cierre">
+                        <option value="<?php echo $resT->h_cierre; ?>" selected><?php $hc1=substr($resT->h_cierre,0,-2); $hc2=substr($resT->h_cierre,-2); echo $hc1.":00".$hc2; ?></option>
+                        <option value="12am">12:00am</option>
+                        <option value="1am">1:00am</option>
+                        <option value="2am">2:00am</option>
+                        <option value="3am">3:00am</option>
+                        <option value="4am">4:00am</option>
+                        <option value="5am">5:00am</option>
+                        <option value="6am">6:00am</option>
+                        <option value="7am">7:00am</option>
+                        <option value="8am">8:00am</option>
+                        <option value="9am">9:00am</option>
+                        <option value="10am">10:00am</option>
+                        <option value="11am">11:00am</option>
+                        <option value="12pm">12:00pm</option>
+                        <option value="1pm">1:00pm</option>
+                        <option value="2pm">2:00pm</option>
+                        <option value="3pm">3:00pm</option>
+                        <option value="4pm">4:00pm</option>
+                        <option value="5pm">5:00pm</option>
+                        <option value="6pm">6:00pm</option>
+                        <option value="7pm">7:00pm</option>
+                        <option value="8pm">8:00pm</option>
+                        <option value="9pm">9:00pm</option>
+                        <option value="10pm">10:00pm</option>
+                        <option value="11pm">11:00pm</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
