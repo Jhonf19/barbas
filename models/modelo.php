@@ -528,6 +528,23 @@ session_start();
 
   }
 
+  function saveCita($data){
+    try {
+      $h = $this->peticion->prepare("INSERT INTO citas VALUES (NULL,:dia, :mes, :anio, :hora, :barbero, :cliente) ");
+      $h->bindParam(':dia', $data['dia'], PDO::PARAM_STR);
+      $h->bindParam(':mes', $data['mes'], PDO::PARAM_STR);
+      $h->bindParam(':anio', $data['anio'], PDO::PARAM_STR);
+      $h->bindParam(':hora', $data['hora'], PDO::PARAM_STR);
+      $h->bindParam(':barbero', $data['barbero'], PDO::PARAM_INT);
+      $h->bindParam(':cliente', $data['cliente'], PDO::PARAM_INT);
+      $res =  $h->execute();
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+    // echo "<pre>";print_r($data['img_d']);echo "</pre>";
+  }
+
 
 
 

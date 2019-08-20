@@ -13,8 +13,8 @@
         <tr>
           <td class="text-capitalize"><?php echo $row->nombre." ".$row->apellido; ?></td>
           <td>
-            <a class="btn btn-primary" href="?b=new_agend&cita=<?php echo $row->id_persona; ?>">
-              <i class="fas fa-list-ol"></i> Ver Turnos
+            <a class="btn btn-primary" href="?b=prevCita&cita=<?php echo $row->id_persona; ?>">
+              <i class="fas fa-list-ol"></i> Ver Agenda
             </a>
           </td>
         </tr>

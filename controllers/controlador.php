@@ -890,6 +890,14 @@ class Controlador
         header("location:?b=index");
       }
     }
+    function prevCita(){
+      if (isset($_SESSION['custom'])) {
+        $_SESSION['cita']['barbero']=$_GET['cita'];
+        header("location:?b=cita");
+      }else {
+        header("location:?b=index");
+      }
+    }
 
     function cita(){
       if (isset($_SESSION['custom'])) {
@@ -913,16 +921,44 @@ class Controlador
            // echo "<pre>";print_r($horas);echo "</pre>";
 
 
+
         include_once('views/layouts/head.php');
         include_once('views/layouts/header3.html');
         if (isset($_POST['fecha'])) {
+
           $data=[
             'dia'=>substr($_POST['fecha'],8,2),
             'mes'=>substr($_POST['fecha'],5,2),
             'anio'=>substr($_POST['fecha'],0,4),
-            'barbero'=>2
+            'barbero'=>$_SESSION['cita']['barbero']
           ];
-          $res2 = $this->o->listCitas($data);
+          $_SESSION['cita']['dia']=$data['dia'];
+          $_SESSION['cita']['mes']=$data['mes'];
+          $_SESSION['cita']['anio']=$data['anio'];
+
+
+
+          $datetime10 = date('d-m-Y 01:00');
+          $datetime20 = $data['dia']."-".$data['mes']."-".$data['anio']."01:00";
+          $datetime1 = date_create($datetime10);
+          $datetime2 = date_create($datetime20);
+
+
+
+
+
+          $interval = date_diff($datetime1, $datetime2);
+          $difer= $interval->format('%R%a días');
+          if ($difer < -1) {
+            echo "<script language='javascript'>";
+            echo "alert('La fecha ingresada no es correcta');";
+            echo "window.location.replace('?b=cita')";
+            echo "</script>";
+          }else {
+            $res2 = $this->o->listCitas($data);
+          }
+
+          echo "<pre>";print_r($_SESSION['cita']);echo "</pre>";
         }
         include_once('views/custom/calendar.php');
         include_once('views/custom/calendarTable.php');
@@ -932,10 +968,43 @@ class Controlador
       }
     }
 
+    function AddCita(){
+      if (isset($_SESSION['custom'])) {
+       // echo "<pre>";print_r($_SESSION['cita']);echo "</pre>";
+        $data=[
+          'dia'=>$_SESSION['cita']['dia'],
+          'mes'=>$_SESSION['cita']['mes'],
+          'anio'=>$_SESSION['cita']['anio'],
+          'hora'=>$_GET['hora'],
+          'barbero'=>$_SESSION['cita']['barbero'],
+          'cliente'=>$_SESSION['custom'][0]->id_persona
+        ];
+
+        echo "<pre>";print_r($data);echo "</pre>";
+
+         $res = $this->o->saveCita($data);
+         if ($res) {
+           echo "<script language='javascript'>";
+           echo "alert('Exito');";
+           echo "window.location.replace('?b=agend')";
+           echo "</script>";
+         }else {
+           echo "<script language='javascript'>";
+           echo "alert('Ocurrió un error');";
+           echo "window.location.replace('?b=agend')";
+           echo "</script>";
+         }
+         unset($_SESSION['cita']);
+      }else {
+        header("location:?b=index");
+      }
+    }
+
 
 
     function agend(){
       if (isset($_SESSION['custom'])) {
+        echo "<pre>";print_r($_SESSION['cita']);echo "</pre>";
         $resT = $this->o->loadSetup();
         if ($resT) {
           $tema = $resT->tema;
