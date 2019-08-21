@@ -900,6 +900,7 @@ class Controlador
     }
 
     function cita(){
+      date_default_timezone_set('America/Bogota');
       if (isset($_SESSION['custom'])) {
           $res = $this->o->loadSetup();
           $a=substr((int)$res->h_apertura,0,2);
@@ -924,7 +925,7 @@ class Controlador
 
         include_once('views/layouts/head.php');
         include_once('views/layouts/header3.html');
-        if (isset($_POST['fecha'])) {
+        if (isset($_POST['fecha']) && !empty($_POST['fecha'])) {
 
           $data=[
             'dia'=>substr($_POST['fecha'],8,2),
@@ -936,22 +937,18 @@ class Controlador
           $_SESSION['cita']['mes']=$data['mes'];
           $_SESSION['cita']['anio']=$data['anio'];
 
-
-
-          $datetime10 = date('d-m-Y 01:00');
-          $datetime20 = $data['dia']."-".$data['mes']."-".$data['anio']."01:00";
+          $datetime10 = date('d-m-Y');
+          $datetime20 = $data['dia']."-".$data['mes']."-".$data['anio'];
           $datetime1 = date_create($datetime10);
           $datetime2 = date_create($datetime20);
 
 
 
-
-
           $interval = date_diff($datetime1, $datetime2);
           $difer= $interval->format('%R%a días');
-          if ($difer < -1) {
+          if ((int)$difer < 0) {
             echo "<script language='javascript'>";
-            echo "alert('La fecha ingresada no es correcta');";
+            echo "alert('La fecha ingresada ya pasó');";
             echo "window.location.replace('?b=cita')";
             echo "</script>";
           }else {
@@ -959,7 +956,8 @@ class Controlador
           }
 
           echo "<pre>";print_r($_SESSION['cita']);echo "</pre>";
-        }
+          }
+
         include_once('views/custom/calendar.php');
         include_once('views/custom/calendarTable.php');
         include_once('views/layouts/foot.html');
