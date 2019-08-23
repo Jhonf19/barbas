@@ -13,7 +13,7 @@ session_start();
   {
     try {
       // $this->peticion->query("SET NAMES 'utf8'");
-      $h = $this->peticion->prepare("SELECT id_persona, documento, nombre, apellido, correo, rol, estado FROM personas WHERE nombre=:user AND password=:pass AND estado=1");
+      $h = $this->peticion->prepare("SELECT id_persona, documento, nombre, apellido, correo, rol, estado, img_perfil FROM personas WHERE nombre=:user AND password=:pass AND estado=1");
       $h->bindParam(':user', $data['user'], PDO::PARAM_STR);
       $h->bindParam(':pass', $data['pass'], PDO::PARAM_STR);
       $h->execute();
@@ -245,7 +245,7 @@ session_start();
       // echo "rol ".$rol;
       // echo "est ".$state;
       try {
-        $h = $this->peticion->prepare("SELECT personas.id_persona, personas.documento, personas.nombre, personas.apellido, personas.correo, personas.estado, personas.rol, roles.id_rol, roles.rol AS rol_name
+        $h = $this->peticion->prepare("SELECT personas.id_persona, personas.documento, personas.nombre, personas.apellido, personas.correo, personas.estado, personas.rol, personas.img_perfil, roles.id_rol, roles.rol AS rol_name
                                           FROM personas, roles
                                           WHERE personas.rol = roles.id_rol AND personas.rol = :rol AND  personas.estado = :state");
         $h->bindParam(':rol', $rol, PDO::PARAM_INT);
@@ -543,6 +543,20 @@ session_start();
     }
     return $res;
     // echo "<pre>";print_r($data['img_d']);echo "</pre>";
+  }
+
+  function changeImgPre($id, $img_perfil){
+    try {
+      $h = $this->peticion->prepare("UPDATE personas SET img_perfil=:img_perfil WHERE id_persona=:id");
+      $h->bindParam(':id', $id, PDO::PARAM_INT);
+      $h->bindParam(':img_perfil', $img_perfil, PDO::PARAM_STR);
+      $res = $h->execute();
+
+    } catch (\Exception $e) {
+
+    }
+    return $res;
+
   }
 
 

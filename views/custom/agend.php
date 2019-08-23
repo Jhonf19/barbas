@@ -5,12 +5,15 @@
   <div class="table-responsive">
     <table class="table table-bordered text-center">
       <thead>
-        <th>Nombre</th><th><i class="fas fa-cog"></i></th>
+      <th>Foto</th><th>Nombre</th><th><i class="fas fa-cog"></i></th>
       </thead>
       <tbody>
         <?php foreach ($res as $row): ?>
 
         <tr>
+          <td>
+            <img src="app/imgs_perf/<?php echo $row->img_perfil; ?>" width="50" alt="foto">
+          </td>
           <td class="text-capitalize"><?php echo $row->nombre." ".$row->apellido; ?></td>
           <td>
             <a class="btn btn-primary" href="?b=prevCita&cita=<?php echo $row->id_persona; ?>">

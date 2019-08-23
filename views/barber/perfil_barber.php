@@ -2,7 +2,7 @@
   <br><br>
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Cambiar contraseña</h4>
+      <h4 class="card-title">Contraseña</h4>
 
       <form action="?b=newPass" method="post">
 
@@ -12,7 +12,21 @@
       <div class="form-group">
         <input type="text" class="form-control" name="nueva" placeholder="Contraseña Nueva" required>
       </div>
-      <button class="btn btn-primary" type="submit" name="button">Guardar cambios</button>
+      <button class="btn btn-primary" type="submit" name="button">Cambiar contraseña</button>
+    </form>
+  </div>
+</div>
+<br><br>
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Foto de presentación</h4>
+      <img src="app/imgs_perf/<?php echo $_SESSION['barber'][0]->img_perfil ?>" width="100" alt="imagen">
+      <form action="?b=changeImgPre" method="post" enctype="multipart/form-data">
+
+      <div class="form-group">
+        <input type="file" class="form-control" accept="image/x-png,image/jpg" name="img_perfil" required>
+      </div>
+      <button class="btn btn-primary" type="submit" name="button">Cambiar foto</button>
     </form>
   </div>
 </div>
@@ -35,7 +49,7 @@
       </select>
     </div>
 
-    <button class="btn btn-primary" type="submit" name="button">Cambiar</button>
+    <button class="btn btn-primary" type="submit" name="button">Cambiar disponibilidad</button>
   </form>
 </div>
 </div>

@@ -64,14 +64,7 @@
     <?php } else {
       echo "<h2 class='text-center'>Ningún A/D creado</h2>";
     } ?>
-    <hr>
-    <div class="card">
-      <div class="card-body">
 
-        <a class="btn btn-primary btn-block" href="?b=addAD">Crear A/D</a>
-
-</div>
-</div>
 </div>
 </div>
 </div>

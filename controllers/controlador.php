@@ -1002,7 +1002,7 @@ class Controlador
 
     function agend(){
       if (isset($_SESSION['custom'])) {
-        echo "<pre>";print_r($_SESSION['cita']);echo "</pre>";
+        // echo "<pre>";print_r($_SESSION['cita']);echo "</pre>";
         $resT = $this->o->loadSetup();
         if ($resT) {
           $tema = $resT->tema;
@@ -1229,7 +1229,7 @@ class Controlador
     }
 
     function addAD(){
-      if (isset($_SESSION['custom'])) {
+      if (isset($_SESSION['barber'])) {
         $res = $this->o->getImgsAD($_SESSION['custom'][0]->id_persona);
         if (count($res)>=3) {
           echo "<script language='javascript'>";
@@ -1244,7 +1244,7 @@ class Controlador
             $tema = "no";
           }
           include_once('views/layouts/head.php');
-          include_once('views/layouts/header3.html');
+          include_once('views/layouts/header2.html');
           include_once('views/custom/newAD.php');
           include_once('views/layouts/foot.html');
         }
@@ -1275,6 +1275,55 @@ class Controlador
           echo "window.location.replace('?b=perfil')";
           echo "</script>";
           // $this->exit();
+        }
+
+      }else {
+        header("location:?b=index");
+      }
+    }
+
+    function changeImgPre(){
+      if (isset($_SESSION['barber'])) {
+        include_once('models/OrientationImg.php');
+        if ($_FILES['img_perfil']['type'] != "image/jpeg" &&  $_FILES['img_perfil']['type'] != "image/png" && $_FILES['img_perfil']['type'] != "image/jpg") {
+          echo "<script language='javascript'>";
+          echo "alert('Archivo no permitido');";
+          echo "window.location.replace('?b=perfil')";
+          echo "</script>";
+        }
+        elseif ($_FILES['img_perfil']['error']>0) {
+          echo "<script language='javascript'>";
+          echo "alert('El archivo supera el tamaño permitido');";
+          echo "window.location.replace('?b=perfil')";
+          echo "</script>";
+        }
+        else {
+          if(move_uploaded_file($_FILES['img_perfil']['tmp_name'],"app/imgs_perf/".$_FILES['img_perfil']['name'])){
+            $img_perfil=$_FILES['img_perfil']['name'];
+            $img_url='app/imgs_perf/';
+            chmod($img_url.$img_perfil, 0755);
+            ExifCleaning::adjustImageOrientation($img_url.$img_perfil);
+            $id=$_SESSION['barber'][0]->id_persona;
+            $res = $this->o->changeImgPre($id, $img_perfil);
+
+            if ($res) {
+              echo "<script language='javascript'>";
+              echo "alert('Foto cambiada');";
+              echo "window.location.replace('?b=perfil')";
+              echo "</script>";
+            }else {
+              echo "<script language='javascript'>";
+              echo "alert('Error al guardar el archivo');";
+              echo "window.location.replace('?b=perfil')";
+              echo "</script>";
+            }
+
+          }else {
+            echo "<script language='javascript'>";
+            echo "alert('Error al subir el archivo');";
+            echo "window.location.replace('?b=perfil')";
+            echo "</script>";
+          }
         }
 
       }else {

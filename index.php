@@ -4,7 +4,6 @@ require_once('controllers/controlador.php');
 // echo "<pre>";
 // print_r($_SESSION);
 // echo "</pre>";
-// session_destroy();
     // instancio la clase Cliente_controlador() y nombro al objeto controlador
 $controlador = new Controlador();
 
