@@ -290,7 +290,7 @@ session_start();
   function listTur($idBar, $idCli){
     if ($idBar) {
         try {
-              $h = $this->peticion->prepare("SELECT * FROM turnos WHERE barbero=:barbero");
+              $h = $this->peticion->prepare("SELECT citas.id_cita, citas.dia, citas.mes, citas.anio, citas.hora, citas.barbero, citas.cliente, personas.id_persona, personas.nombre, personas.apellido FROM citas, personas WHERE citas.cliente = personas.id_persona AND citas.barbero =:barbero");
               $h->bindParam(':barbero', $idBar, PDO::PARAM_INT);
               $h->execute();
               $res = $h->fetchALL(PDO::FETCH_OBJ);
@@ -400,18 +400,82 @@ session_start();
     return $res;
   }
 
-  function saveImgsAD($data){
+  function saveImgsBefore($data){
     try {
-      $h = $this->peticion->prepare("INSERT INTO imgs_ad VALUES (NULL,:id, :img_a, :img_d) ");
-      $h->bindParam(':id', $data['id'], PDO::PARAM_INT);
-      $h->bindParam(':img_a', $data['img_a'], PDO::PARAM_STR);
-      $h->bindParam(':img_d', $data['img_d'], PDO::PARAM_STR);
-      $res =  $h->execute();
-    } catch (\Exception $e) {
+      $j = $this->peticion->prepare("SELECT *  FROM imgs_ad WHERE id_user=:id");
+      $j->bindParam(':id', $data['id'], PDO::PARAM_INT);
+      $j->execute();
+      $total = $j->fetch(PDO::FETCH_OBJ);
+    } catch (\Exception $e) { }
+    // echo "<pre>"; print_r($total); echo "</pre>";
 
+
+    if ($total) {
+      try {
+        $h = $this->peticion->prepare("UPDATE imgs_ad SET  img_a1=:img_a1, img_a2=:img_a2, img_a3=:img_a3 WHERE id_user=:id ");
+        $h->bindParam(':id', $data['id'], PDO::PARAM_INT);
+        $h->bindParam(':img_a1', $data['img_a1'], PDO::PARAM_STR);
+        $h->bindParam(':img_a2', $data['img_a2'], PDO::PARAM_STR);
+        $h->bindParam(':img_a3', $data['img_a3'], PDO::PARAM_STR);
+        $res =  $h->execute();
+      } catch (\Exception $e) { }
+      return $res;
+      // echo "<pre>";print_r($data['img_d']);echo "</pre>";
     }
-    return $res;
-    // echo "<pre>";print_r($data['img_d']);echo "</pre>";
+    else {
+      try {
+        $h = $this->peticion->prepare("INSERT INTO imgs_ad VALUES(NULL, :id, :img_a1, :img_a2, :img_a3, :a,:b,:c) ");
+        $h->bindParam(':id', $data['id'], PDO::PARAM_INT);
+        $h->bindParam(':img_a1', $data['img_a1'], PDO::PARAM_STR);
+        $h->bindParam(':img_a2', $data['img_a2'], PDO::PARAM_STR);
+        $h->bindParam(':img_a3', $data['img_a3'], PDO::PARAM_STR);
+        $h->bindParam(':a', $data['img_d1'], PDO::PARAM_STR);
+        $h->bindParam(':b', $data['img_d2'], PDO::PARAM_STR);
+        $h->bindParam(':c', $data['img_d3'], PDO::PARAM_STR);
+        $res =  $h->execute();
+      } catch (\Exception $e) { }
+      return $res;
+      // echo "<pre>";print_r($res);echo "</pre>";
+    }
+  }
+
+  function saveImgsAfter($data){
+    try {
+      $j = $this->peticion->prepare("SELECT *  FROM imgs_ad WHERE id_user=:id");
+      $j->bindParam(':id', $data['id'], PDO::PARAM_INT);
+      $j->execute();
+      $total = $j->fetch(PDO::FETCH_OBJ);
+    } catch (\Exception $e) { }
+    // echo "<pre>"; print_r($total); echo "</pre>";
+
+
+    if ($total) {
+      try {
+        $h = $this->peticion->prepare("UPDATE imgs_ad SET  img_d1=:img_a1, img_d2=:img_a2, img_d3=:img_a3 WHERE id_user=:id ");
+        $h->bindParam(':id', $data['id'], PDO::PARAM_INT);
+        $h->bindParam(':img_a1', $data['img_a1'], PDO::PARAM_STR);
+        $h->bindParam(':img_a2', $data['img_a2'], PDO::PARAM_STR);
+        $h->bindParam(':img_a3', $data['img_a3'], PDO::PARAM_STR);
+        $res =  $h->execute();
+      } catch (\Exception $e) { }
+      return $res;
+      // echo "<pre>";print_r($data['img_d']);echo "</pre>";
+    }
+    else {
+      try {
+        $h = $this->peticion->prepare("INSERT INTO imgs_ad VALUES(NULL, :a,:b,:c, :id, :img_a1, :img_a2, :img_a3) ");
+        $h->bindParam(':id', $data['id'], PDO::PARAM_INT);
+        $h->bindParam(':img_a1', $data['img_a1'], PDO::PARAM_STR);
+        $h->bindParam(':img_a2', $data['img_a2'], PDO::PARAM_STR);
+        $h->bindParam(':img_a3', $data['img_a3'], PDO::PARAM_STR);
+        $h->bindParam(':a', $data['img_d1'], PDO::PARAM_STR);
+        $h->bindParam(':b', $data['img_d2'], PDO::PARAM_STR);
+        $h->bindParam(':c', $data['img_d3'], PDO::PARAM_STR);
+        $res =  $h->execute();
+      } catch (\Exception $e) { }
+      return $res;
+      // echo "<pre>";print_r($res);echo "</pre>";
+    }
   }
 
   function getImgsAD($id){
@@ -557,6 +621,18 @@ session_start();
     }
     return $res;
 
+  }
+
+  function userDocValid($documento){
+    try {
+      $h = $this->peticion->prepare("SELECT id_persona, documento, nombre, apellido FROM personas  WHERE documento = :documento");
+      $h->bindParam(':documento', $documento, PDO::PARAM_STR);
+      $res = $h->execute();
+      $res = $h->fetch(PDO::FETCH_OBJ);
+    } catch (\Exception $e) {
+
+    }
+    return $res;
   }
 
 

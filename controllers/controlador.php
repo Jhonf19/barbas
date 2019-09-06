@@ -835,7 +835,7 @@ class Controlador
         include_once('views/layouts/head.php');
         include_once('views/layouts/header2.html');
         $res = $this->o->listTur($_SESSION['barber'][0]->id_persona,'');
-        include_once('views/barber/cita_table.php');
+        include_once('views/barber/list_citas.php');
         include_once('views/layouts/foot.html');
 
       }else {
@@ -1164,79 +1164,286 @@ class Controlador
         header("location:?b=index");
       }
     }
+
+    function saveBefore(){
+      if (isset($_SESSION['barber'])) {
+        //validar cedula en la BD
+        $doc = $_POST['docA'];
+        $res = $this->o->userDocValid($doc);
+        if ($res) {
+          $id=$res->id_persona;
+
+        ///////////////////////
+
+          $names=[];
+          $tmp_names=[];
+          $errors=[];
+        for ($i=0; $i < count($_FILES['ant']['name']) ; $i++) {
+            array_push($names, $_FILES['ant']['name'][$i]);
+        }
+        for ($i=0; $i < count($_FILES['ant']['tmp_name']) ; $i++) {
+            array_push($tmp_names, $_FILES['ant']['tmp_name'][$i]);
+        }
+        for ($i=0; $i < count($_FILES['ant']['error']) ; $i++) {
+            array_push($errors, $_FILES['ant']['error'][$i]);
+        }
+
+
+
+        //validar errores
+        $r = array_search(0, $errors);
+        if (!empty($r)) {
+
+          //notiifcar error de tipo o tamaño en el archivo y volver a  la vista anterior
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un Error');";
+          echo "window.location.replace('?b=addAD')";
+          echo "</script>";
+        }
+        else {
+          //validar cantidad de fotos
+          if (count($_FILES['ant']) > 3) {
+            echo "<script language='javascript'>";
+            echo "alert('Solo puedes adjuntar 3 fotos');";
+            echo "window.location.replace('?b=addAD')";
+            echo "</script>";
+          }
+          else {
+            $namesA=[];
+
+            for ($z=0; $z < 3; $z++) {
+              if (isset($names[$z])) {
+                $namesA[$z] = $names[$z];
+              }else {
+                $namesA[$z]='';
+              }
+            }
+            $data=[
+              'id'=>$id,
+              'img_a1'=>$namesA[0],
+              'img_a2'=>$namesA[1],
+              'img_a3'=>$namesA[2],
+              'img_d1'=>'',
+              'img_d2'=>'',
+              'img_d3'=>''
+            ];
+            //save DB y en SERVER
+             $resSave = $this->o->saveImgsBefore($data);
+            // verificar si la consulta tuvo exito
+            if ($resSave) {
+              echo "<script language='javascript'>";
+              echo "alert('Se creo un Antes con exito');";
+              echo "window.location.replace('?b=addAD')";
+              echo "</script>";
+            }
+            else {
+              echo "<script language='javascript'>";
+              echo "alert('Ocurrió un Error');";
+              echo "window.location.replace('?b=addAD')";
+              echo "</script>";
+            }
+          }
+        }
+
+
+        }
+        else {
+          //notificar que el documento igresado no coincide en la BD
+          echo "<script language='javascript'>";
+          echo "alert('El documento igresado no es correcto');";
+          echo "window.location.replace('?b=addAD')";
+          echo "</script>";
+        }
+
+
+        // echo $_FILES['ant']['name'][$i]."<br>";
+        // foreach ($_FILES['ant'] as $key => $file) {
+        //   echo $file['name'];
+        // }
+
+      }
+      else {
+        header("location:?b=index");
+      }
+    }
+
+    function saveAfter(){
+      if (isset($_SESSION['barber'])) {
+        //validar cedula en la BD
+        $doc = $_POST['docD'];
+        $res = $this->o->userDocValid($doc);
+        if ($res) {
+          $id=$res->id_persona;
+
+        ///////////////////////
+
+          $names=[];
+          $tmp_names=[];
+          $errors=[];
+        for ($i=0; $i < count($_FILES['des']['name']) ; $i++) {
+            array_push($names, $_FILES['des']['name'][$i]);
+        }
+        for ($i=0; $i < count($_FILES['des']['tmp_name']) ; $i++) {
+            array_push($tmp_names, $_FILES['des']['tmp_name'][$i]);
+        }
+        for ($i=0; $i <count($_FILES['des']['error']) ; $i++) {
+            array_push($errors, $_FILES['des']['error'][$i]);
+        }
+
+
+
+        //validar errores
+        $r = array_search(0, $errors);
+        if (!empty($r)) {
+
+          //notiifcar error de tipo o tamaño en el archivo y volver a  la vista anterior
+          echo "<script language='javascript'>";
+          echo "alert('Ocurrió un Error');";
+          echo "window.location.replace('?b=addAD')";
+          echo "</script>";
+        }
+        else {
+          //validar cantidad de fotos
+          if (count($_FILES['des']) > 3) {
+            echo "<script language='javascript'>";
+            echo "alert('Solo puedes adjuntar 3 fotos');";
+            echo "window.location.replace('?b=addAD')";
+            echo "</script>";
+          }
+          else {
+
+              $namesD=[];
+
+              for ($z=0; $z < 3; $z++) {
+                if (isset($names[$z])) {
+                  $namesD[$z] = $names[$z];
+                }else {
+                  $namesD[$z]='';
+                }
+              }
+              $data=[
+                'id'=>$id,
+                'img_a1'=>$namesD[0],
+                'img_a2'=>$namesD[1],
+                'img_a3'=>$namesD[2],
+                'img_d1'=>'',
+                'img_d2'=>'',
+                'img_d3'=>''
+              ];
+              //save DB y en SERVER
+               $resSave = $this->o->saveImgsAfter($data);
+              // verificar si la consulta tuvo exito
+              if ($resSave) {
+                echo "<script language='javascript'>";
+                echo "alert('Se creo un Despúes con exito');";
+                echo "window.location.replace('?b=addAD')";
+                echo "</script>";
+              }
+              else {
+                echo "<script language='javascript'>";
+                echo "alert('Ocurrió un Error');";
+                echo "window.location.replace('?b=addAD')";
+                echo "</script>";
+              }
+          }
+        }
+
+
+        }
+        else {
+          //notificar que el documento igresado no coincide en la BD
+          echo "<script language='javascript'>";
+          echo "alert('El documento igresado no es correcto');";
+          echo "window.location.replace('?b=addAD')";
+          echo "</script>";
+        }
+
+
+        // echo $_FILES['ant']['name'][$i]."<br>";
+        // foreach ($_FILES['ant'] as $key => $file) {
+        //   echo $file['name'];
+        // }
+
+      }
+      else {
+        header("location:?b=index");
+      }
+    }
+
     function saveAD(){
-      if (isset($_SESSION['custom'])) {
-        // echo "<pre>";
-        // print_r($_FILES);
-        // echo "</pre>";
+      if (isset($_SESSION['barber'])) {
+        echo "<pre>";
+        print_r($_FILES['ant']['name'][0]);
+        echo "</pre>";
 
 
         // $ext_a = substr($_FILES['ant']['name'], -3);
         // $ext_d = substr($_FILES['des']['name'], -3);
-        if (($_FILES['ant']['type'] != "image/jpeg" && $_FILES['ant']['type'] !="image/png" ) || ($_FILES['des']['type'] != "image/jpeg" && $_FILES['des']['type'] !="image/png" )) {
-          echo "<script language='javascript'>";
-          echo "alert('Solo puedes subir imagenes');";
-          echo "window.location.replace('?b=addAD')";
-          echo "</script>";
-        }else {
-          if (($_FILES['ant']['error']>0 || $_FILES['des']['error']>0) ) {
-            if ($_FILES['ant']['error']==1 || $_FILES['des']['error']==1) {
-              echo "<script language='javascript'>";
-              echo "alert('El tamaño del archivo supera los 8Mb');";
-              echo "window.location.replace('?b=addAD')";
-              echo "</script>";
-            }
-        }else {
-    //->
-          if (move_uploaded_file($_FILES['ant']['tmp_name'],"app/imgs_ad/".$_FILES['ant']['name']) && move_uploaded_file($_FILES['des']['tmp_name'],"app/imgs_ad/".$_FILES['des']['name'])) {
-            // code...
-          $id = $_SESSION['custom'][0]->id_persona;
-          $data = [
-            'id'=>$_SESSION['custom'][0]->id_persona,
-            'img_a'=>$_FILES['ant']['name'],
-            'img_d'=>$_FILES['des']['name']
-          ];
-        $res = $this->o->saveImgsAD($data);
-        if ($res) {
-          echo "<script language='javascript'>";
-          echo "alert('A/D guardado');";
-          echo "window.location.replace('?b=perfil')";
-          echo "</script>";
-        }else {
-            echo "<script language='javascript'>";
-            echo "alert('Error al guardar los archivos');";
-            echo "window.location.replace('?b=addAD')";
-            echo "</script>";
-          }
-
-      }else {
-          echo "<script language='javascript'>";
-          echo "alert('Error al subir los archivos');";
-          echo "window.location.replace('?b=addAD')";
-          echo "</script>";
-        }
-        }
-//->
-        }
-
-
-        // $r = ini_get("upload_max_filesize");
-        // echo $r;
-
-      }else {
+//         if (($_FILES['ant']['type'] != "image/jpeg" && $_FILES['ant']['type'] !="image/png" ) || ($_FILES['des']['type'] != "image/jpeg" && $_FILES['des']['type'] !="image/png" )) {
+//           echo "<script language='javascript'>";
+//           echo "alert('Solo puedes subir imagenes');";
+//           echo "window.location.replace('?b=addAD')";
+//           echo "</script>";
+//         }else {
+//           if (($_FILES['ant']['error']>0 || $_FILES['des']['error']>0) ) {
+//             if ($_FILES['ant']['error']==1 || $_FILES['des']['error']==1) {
+//               echo "<script language='javascript'>";
+//               echo "alert('El tamaño del archivo supera los 8Mb');";
+//               echo "window.location.replace('?b=addAD')";
+//               echo "</script>";
+//             }
+//         }else {
+//     //->
+//           if (move_uploaded_file($_FILES['ant']['tmp_name'],"app/imgs_ad/".$_FILES['ant']['name']) && move_uploaded_file($_FILES['des']['tmp_name'],"app/imgs_ad/".$_FILES['des']['name'])) {
+//             // code...
+//           $id = $_SESSION['custom'][0]->id_persona;
+//           $data = [
+//             'id'=>$_SESSION['custom'][0]->id_persona,
+//             'img_a'=>$_FILES['ant']['name'],
+//             'img_d'=>$_FILES['des']['name']
+//           ];
+//         $res = $this->o->saveImgsAD($data);
+//         if ($res) {
+//           echo "<script language='javascript'>";
+//           echo "alert('A/D guardado');";
+//           echo "window.location.replace('?b=perfil')";
+//           echo "</script>";
+//         }else {
+//             echo "<script language='javascript'>";
+//             echo "alert('Error al guardar los archivos');";
+//             echo "window.location.replace('?b=addAD')";
+//             echo "</script>";
+//           }
+//
+//       }else {
+//           echo "<script language='javascript'>";
+//           echo "alert('Error al subir los archivos');";
+//           echo "window.location.replace('?b=addAD')";
+//           echo "</script>";
+//         }
+//         }
+// //->
+//         }
+//
+//
+//         // $r = ini_get("upload_max_filesize");
+//         // echo $r;
+//
+      }
+      else {
         header("location:?b=index");
       }
     }
 
     function addAD(){
       if (isset($_SESSION['barber'])) {
-        $res = $this->o->getImgsAD($_SESSION['custom'][0]->id_persona);
-        if (count($res)>=3) {
-          echo "<script language='javascript'>";
-          echo "alert('Solo puedes guardar 3 A/D');";
-          echo "window.location.replace('?b=perfil')";
-          echo "</script>";
-        }else {
+        // $res = $this->o->getImgsAD($_SESSION['custom'][0]->id_persona);
+        // if (count($res)>=3) {
+        //   echo "<script language='javascript'>";
+        //   echo "alert('Solo puedes guardar 3 A/D');";
+        //   echo "window.location.replace('?b=perfil')";
+        //   echo "</script>";
+        // }else {
           $resT = $this->o->loadSetup();
           if ($resT) {
             $tema = $resT->tema;
@@ -1245,9 +1452,9 @@ class Controlador
           }
           include_once('views/layouts/head.php');
           include_once('views/layouts/header2.html');
-          include_once('views/custom/newAD.php');
+          include_once('views/barber/newAD.php');
           include_once('views/layouts/foot.html');
-        }
+        // }
 
       }else {
         header("location:?b=index");
