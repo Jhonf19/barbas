@@ -1170,6 +1170,7 @@ class Controlador
         //validar cedula en la BD
         $doc = $_POST['docA'];
         $res = $this->o->userDocValid($doc);
+        $files_length=count($_FILES['ant']['name']);
         if ($res) {
           $id=$res->id_persona;
 
@@ -1202,11 +1203,12 @@ class Controlador
         }
         else {
           //validar cantidad de fotos
-          if (count($_FILES['ant']) > 3) {
+          if ($files_length > 3) {
             echo "<script language='javascript'>";
             echo "alert('Solo puedes adjuntar 3 fotos');";
             echo "window.location.replace('?b=addAD')";
             echo "</script>";
+            // echo "<pre>"; print_r($_FILES['ant']); echo "</pre>";
           }
           else {
             $namesA=[];
@@ -1227,21 +1229,49 @@ class Controlador
               'img_d2'=>'',
               'img_d3'=>''
             ];
-            //save DB y en SERVER
-             $resSave = $this->o->saveImgsBefore($data);
-            // verificar si la consulta tuvo exito
-            if ($resSave) {
-              echo "<script language='javascript'>";
-              echo "alert('Se creo un Antes con exito');";
-              echo "window.location.replace('?b=addAD')";
-              echo "</script>";
+            //save en SERVER y DB
+
+            include_once('models/OrientationImg.php');
+
+            $subidos=[];
+            $array_lengt_tm = count($names);
+            for ($h=0; $h < $array_lengt_tm ; $h++) {
+
+            $subidos[$h] = move_uploaded_file($_FILES['ant']['tmp_name'][$h],"app/imgs_ad/".$_FILES['ant']['name'][$h]);
+
+            $img_url='app/imgs_ad/';
+            chmod($img_url.$names[0], 0755);//Orientacion
+            ExifCleaning::adjustImageOrientation($img_url.$names[0]);//Orientacion
             }
-            else {
-              echo "<script language='javascript'>";
-              echo "alert('Ocurrió un Error');";
-              echo "window.location.replace('?b=addAD')";
-              echo "</script>";
+
+            $comp = array_search(0, $subidos);
+            if (!empty($comp)) {
+                echo "<script language='javascript'>";
+                echo "alert('Ocurrió un error al subir los archivos');";
+                echo "window.location.replace('?b=addAD')";
+                echo "</script>";
+            }else {
+              // echo "<pre>"; print_r($subidos); echo "</pre>";
+              $resSave = $this->o->saveImgsBefore($data);
+              ///////////////**********************
+              // verificar si la consulta tuvo exito
+              if ($resSave) {
+                echo "<script language='javascript'>";
+                echo "alert('Se creo un Antes con exito');";
+                echo "window.location.replace('?b=addAD')";
+                echo "</script>";
+              }
+              else {
+                echo "<script language='javascript'>";
+                echo "alert('Ocurrió un Error');";
+                echo "window.location.replace('?b=addAD')";
+                echo "</script>";
+              }
+              ////////////*******************
             }
+
+
+
           }
         }
 
@@ -1491,6 +1521,7 @@ class Controlador
 
     function changeImgPre(){
       if (isset($_SESSION['barber'])) {
+        //Orientacion de las imgs
         include_once('models/OrientationImg.php');
         if ($_FILES['img_perfil']['type'] != "image/jpeg" &&  $_FILES['img_perfil']['type'] != "image/png" && $_FILES['img_perfil']['type'] != "image/jpg") {
           echo "<script language='javascript'>";
@@ -1508,8 +1539,8 @@ class Controlador
           if(move_uploaded_file($_FILES['img_perfil']['tmp_name'],"app/imgs_perf/".$_FILES['img_perfil']['name'])){
             $img_perfil=$_FILES['img_perfil']['name'];
             $img_url='app/imgs_perf/';
-            chmod($img_url.$img_perfil, 0755);
-            ExifCleaning::adjustImageOrientation($img_url.$img_perfil);
+            chmod($img_url.$img_perfil, 0755);//Orientacion
+            ExifCleaning::adjustImageOrientation($img_url.$img_perfil);//Orientacion
             $id=$_SESSION['barber'][0]->id_persona;
             $res = $this->o->changeImgPre($id, $img_perfil);
 
