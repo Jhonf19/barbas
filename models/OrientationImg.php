@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE);//desarrollo
+error_reporting(0);//desarrollo
 	class ExifCleaning {
 		private static function reflejarImagen ($imagenOriginal) {
 			$anchura = imagesx ($imagenOriginal);

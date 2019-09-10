@@ -1240,8 +1240,8 @@ class Controlador
             $subidos[$h] = move_uploaded_file($_FILES['ant']['tmp_name'][$h],"app/imgs_ad/".$_FILES['ant']['name'][$h]);
 
             $img_url='app/imgs_ad/';
-            chmod($img_url.$names[0], 0755);//Orientacion
-            ExifCleaning::adjustImageOrientation($img_url.$names[0]);//Orientacion
+            chmod($img_url.$names[$h], 0755);//Orientacion
+            ExifCleaning::adjustImageOrientation($img_url.$names[$h]);//Orientacion
             }
 
             $comp = array_search(0, $subidos);
@@ -1302,6 +1302,7 @@ class Controlador
         //validar cedula en la BD
         $doc = $_POST['docD'];
         $res = $this->o->userDocValid($doc);
+        $files_length=count($_FILES['des']['name']);
         if ($res) {
           $id=$res->id_persona;
 
@@ -1334,7 +1335,7 @@ class Controlador
         }
         else {
           //validar cantidad de fotos
-          if (count($_FILES['des']) > 3) {
+          if ($files_length > 3) {
             echo "<script language='javascript'>";
             echo "alert('Solo puedes adjuntar 3 fotos');";
             echo "window.location.replace('?b=addAD')";
@@ -1361,19 +1362,42 @@ class Controlador
                 'img_d3'=>''
               ];
               //save DB y en SERVER
-               $resSave = $this->o->saveImgsAfter($data);
-              // verificar si la consulta tuvo exito
-              if ($resSave) {
-                echo "<script language='javascript'>";
-                echo "alert('Se creo un Despúes con exito');";
-                echo "window.location.replace('?b=addAD')";
-                echo "</script>";
+
+              include_once('models/OrientationImg.php');
+
+              $subidos=[];
+              $array_lengt_tm = count($names);
+              for ($h=0; $h < $array_lengt_tm ; $h++) {
+
+              $subidos[$h] = move_uploaded_file($_FILES['des']['tmp_name'][$h],"app/imgs_ad/".$_FILES['des']['name'][$h]);
+
+              $img_url='app/imgs_ad/';
+              chmod($img_url.$names[$h], 0755);//Orientacion
+              ExifCleaning::adjustImageOrientation($img_url.$names[$h]);//Orientacion
               }
-              else {
+
+              $comp = array_search(0, $subidos);
+              if (!empty($comp)) {
                 echo "<script language='javascript'>";
-                echo "alert('Ocurrió un Error');";
+                echo "alert('Ocurrió un error al subir los archivos');";
                 echo "window.location.replace('?b=addAD')";
                 echo "</script>";
+              }else {
+                // code...
+                $resSave = $this->o->saveImgsAfter($data);
+                // verificar si la consulta tuvo exito
+                if ($resSave) {
+                  echo "<script language='javascript'>";
+                  echo "alert('Se creo un Despúes con exito');";
+                  echo "window.location.replace('?b=addAD')";
+                  echo "</script>";
+                }
+                else {
+                  echo "<script language='javascript'>";
+                  echo "alert('Ocurrió un Error');";
+                  echo "window.location.replace('?b=addAD')";
+                  echo "</script>";
+                }
               }
           }
         }
