@@ -198,19 +198,22 @@ if (document.getElementById("btnFinishTurn")) {
 
       });
 }
+  function zoomAD(_srcA, _srcD){
+    $("#imgA").attr("src", _srcA);
+    $("#imgD").attr("src", _srcD);
+    $("#zoomModalAD").modal("show");
+    // console.log(_srcA);
+  }
 
+  function zAD(a, b) {
+      zoomAD(a,b);
+      // console.log(a+b);
+  }
 
   function zoom(_src) {
     $("#zoomModal img").attr("src",_src);
     $('#zoomModal').modal('show');
   }
   function zoomr(e) {
-
-      // alert("weeeeee")
-    //  var y = $(this).attr("src");
       zoom(e);
-      //console.log(e);
-      //var xz = $("#zoomModal").attr("src");
-
-
   }

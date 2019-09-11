@@ -12,6 +12,7 @@
 
   </div>
 </div>
+<!-- fin Modal -->
 <div class="container">
 
     <div class="row ">

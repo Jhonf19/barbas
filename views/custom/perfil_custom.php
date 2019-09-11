@@ -1,8 +1,3 @@
-<?php
-echo "<pre>";
-print_r($res[0]->id_user);
-echo "</pre>";
- ?>
  <div class="container">
    <br><br>
    <div class="card">
@@ -25,30 +20,37 @@ echo "</pre>";
  <div class="card">
    <div class="card-body">
      <h4 class="card-title">Fotos A/D</h4>
-     <small><i class="fas fa-info-circle"></i> Puedes crear 3 A/D</small>
      <hr>
-     <h5 class="text-center">Antes</h5>
      <?php if (isset($res) && !empty($res)){ ?>
        <div class="row ">
        <div class="col-md-6 offset-md-3 col-sm-12" id="card_pub">
+         <div class="d-flex justify-content-around">
+           <h6>Antes</h6>
+           <h6>Despúes</h6>
+         </div>
          <div class="card">
-
            <div id="carouselAD" class="carousel slide" data-ride="carousel">
              <div id="carouselView" class="carousel-inner">
 
-               <div class="carousel-item active " style="height: auto; width:100%;">
-                   <img class="d-block w-50"   src="<?php echo 'app/imgs_ad/'.$res[0]->img_a1; ?>" alt="Antes1">
-                   <img class="d-block w-50"  src="<?php echo 'app/imgs_ad/'.$res[0]->img_d1; ?>" alt="Despúes1">
+               <div class="carousel-item active" style="height: auto; width:100%;">
+                   <div class="d-flex" onclick="zAD('app/imgs_ad/<?php echo $res[0]->img_a1; ?>',' app/imgs_ad/<?php echo $res[0]->img_d1; ?>')">
+                     <img class="d-block w-50"   src="<?php echo 'app/imgs_ad/'.$res[0]->img_a1; ?>" alt="Antes1">
+                     <img class="d-block w-50"  src="<?php echo 'app/imgs_ad/'.$res[0]->img_d1; ?>" alt="Despúes1">
+                   </div>
                </div>
 
-               <div class="carousel-item " style="height: auto; width:100%;">
+               <div class="carousel-item " onclick="zAD('app/imgs_ad/<?php echo $res[0]->img_a2; ?>',' app/imgs_ad/<?php echo $res[0]->img_d2; ?>')" style="height: auto; width:100%;">
+                 <div class="d-flex">
                    <img class="d-block w-50"   src="<?php echo 'app/imgs_ad/'.$res[0]->img_a2; ?>" alt="Antes2">
                    <img class="d-block w-50"  src="<?php echo 'app/imgs_ad/'.$res[0]->img_d2; ?>" alt="Despúes2">
+                 </div>
                </div>
 
-               <div class="carousel-item " style="height: auto; width:100%;">
+               <div class="carousel-item " onclick="zAD('app/imgs_ad/<?php echo $res[0]->img_a3; ?>',' app/imgs_ad/<?php echo $res[0]->img_d3; ?>')" style="height: auto; width:100%;">
+                 <div class="d-flex">
                    <img class="d-block w-50"   src="<?php echo 'app/imgs_ad/'.$res[0]->img_a3; ?>" alt="Antes3">
                    <img class="d-block w-50"  src="<?php echo 'app/imgs_ad/'.$res[0]->img_d3; ?>" alt="Despúes3">
+                 </div>
                </div>
 
              </div>
@@ -77,3 +79,20 @@ echo "</pre>";
  </div>
  </div>
  <br><br>
+
+ <!-- Modal -->
+ <div class="modal fade" id="zoomModalAD" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+     <div class="modal-content modal-lg">
+       <!-- d-flex for display inline -->
+       <div class="d-flex">
+         <img class="d-block w-50" id="imgA" src="" >
+         <img class="d-block w-50" id="imgD" src="" >
+       </div>
+
+
+     </div>
+
+   </div>
+ </div>
+ <!-- fin Modal -->
