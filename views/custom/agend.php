@@ -1,29 +1,24 @@
 <br>
-<div class="container col-md-6 offset-md-3 col-sm-12 offset-sm-0 col-xs-12">
+<div class="container">
   <h3 class="text-center">Barberos Disponibles</h3>
   <br>
-  <div class="table-responsive">
-    <table class="table table-bordered text-center">
-      <thead>
-      <th>Foto</th><th>Nombre</th><th><i class="fas fa-cog"></i></th>
-      </thead>
-      <tbody>
-        <?php foreach ($res as $row): ?>
+  <div class="row">
+    <div class="col-md-4 offset-md-4 col-sm-8 offset-sm-2 col-xs-2 offset-xs-1">
 
-        <tr>
-          <td>
-            <img src="app/imgs_perf/<?php echo $row->img_perfil; ?>" width="50" alt="foto">
-          </td>
-          <td class="text-capitalize"><?php echo $row->nombre." ".$row->apellido; ?></td>
-          <td>
-            <a class="btn btn-primary" href="?b=prevCita&cita=<?php echo $row->id_persona; ?>">
+      <?php foreach ($res as $row): ?>
+        <div class="card ">
+          <img class="card-img-top img-thumbnail" src="app/imgs_perf/<?php echo $row->img_perfil; ?>"  alt="foto barbero">
+          <div class="card-body">
+            <h5 class="card-title text-capitalize"><?php echo $row->nombre." ".$row->apellido; ?></h5>
+            <a class="btn btn-primary btn-block" href="?b=prevCita&cita=<?php echo $row->id_persona; ?>">
               <i class="fas fa-list-ol"></i> Ver Agenda
             </a>
-          </td>
-        </tr>
+          </div>
+        </div><br>
       <?php endforeach; ?>
-      </tbody>
-    </table>
+
+    </div>
+  </div>
   </div>
 
-</div><br><br>
+</div><br>
