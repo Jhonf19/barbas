@@ -82,12 +82,17 @@
 
  <!-- Modal -->
  <div class="modal fade" id="zoomModalAD" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+     <!-- <div class="modal-header"> -->
+       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+     <!-- </div> -->
      <div class="modal-content modal-lg">
        <!-- d-flex for display inline -->
-       <div class="d-flex">
+       <div class="d-flex ">
          <img class="d-block w-50" id="imgA" src="" >
          <img class="d-block w-50" id="imgD" src="" >
+         <button tabindex="1" type="button" class="close position-absolute" style="left:10px; top:0px" data-dismiss="modal" aria-label="Close">
+           <span class="text-danger" style="font-size:2em;" aria-hidden="true">&times;</span>
+         </button>
        </div>
 
 
