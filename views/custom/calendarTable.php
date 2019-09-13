@@ -1,10 +1,10 @@
-<div class="container">
-  <table class="table table-bordered text-center">
-    <thead>
-      <th>HORAS LIBRES</th>
-    </thead>
-    <tbody>
-
+<hr class="bg-dark">
+<div class="container col-md-4 offset-md-4 col-sm-12 offset-sm-0 col-xs-12">
+  <h3 class="text-center">HORAS</h3>
+  <small><i class="fas fa-info-circle"></i>
+    Toca la hora que desees y ¡listo! tendras una reservación.
+  </small>
+  <br><hr>
         <?php if (isset($res2))
         {
                  $result = array_intersect($horas, $res2);
@@ -14,13 +14,12 @@
                 next($result);
                }?>
            <?php foreach ($horas as $key => $value): ?>
-             <tr>
-               <td><?php echo $value; ?> <a  href="?b=AddCita&hora=<?php echo $value; ?>">
-                 <i class="far fa-calendar-check"></i></a>
-               </td>
-             </tr>
+
+                  <a class="btn btn-outline-dark btn-block" href="?b=AddCita&hora=<?php echo $value; ?>">
+                    <i class="fas fa-calendar-check"></i> <?php echo $value; ?>
+                  </a>
+
            <?php endforeach;
        } ?>
-    </tbody>
-  </table>
+       <br><br>
 </div>

@@ -955,7 +955,6 @@ class Controlador
             $res2 = $this->o->listCitas($data);
           }
 
-          echo "<pre>";print_r($_SESSION['cita']);echo "</pre>";
           }
 
         include_once('views/custom/calendar.php');
@@ -983,12 +982,12 @@ class Controlador
          $res = $this->o->saveCita($data);
          if ($res) {
            echo "<script language='javascript'>";
-           echo "alert('Exito');";
+           echo "alert('Tu reservación se realizó con exito');";
            echo "window.location.replace('?b=agend')";
            echo "</script>";
          }else {
            echo "<script language='javascript'>";
-           echo "alert('Ocurrió un error');";
+           echo "alert('No se pudo realizar tu reservación');";
            echo "window.location.replace('?b=agend')";
            echo "</script>";
          }
