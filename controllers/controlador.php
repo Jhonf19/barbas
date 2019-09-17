@@ -946,11 +946,20 @@ class Controlador
 
           $interval = date_diff($datetime1, $datetime2);
           $difer= $interval->format('%R%a días');
-          if ((int)$difer < 0) {
-            echo "<script language='javascript'>";
-            echo "alert('La fecha ingresada ya pasó');";
-            echo "window.location.replace('?b=cita')";
-            echo "</script>";
+          if ((int)$difer < 1) {
+              if ($difer < 0) {
+                echo "<script language='javascript'>";
+                echo "alert('La fecha seleccionada ya pasó');";
+                echo "window.location.replace('?b=cita')";
+                echo "</script>";
+              }else {
+                echo "<script language='javascript'>";
+                echo "alert('No se admiten reservaciones para el mismo día');";
+                echo "window.location.replace('?b=cita')";
+                echo "</script>";
+              }
+
+
           }else {
             $res2 = $this->o->listCitas($data);
           }
@@ -966,6 +975,7 @@ class Controlador
     }
 
     function AddCita(){
+      date_default_timezone_set('America/Bogota');
       if (isset($_SESSION['custom'])) {
        // echo "<pre>";print_r($_SESSION['cita']);echo "</pre>";
         $data=[
@@ -977,20 +987,21 @@ class Controlador
           'cliente'=>$_SESSION['custom'][0]->id_persona
         ];
 
-        echo "<pre>";print_r($data);echo "</pre>";
 
-         $res = $this->o->saveCita($data);
-         if ($res) {
-           echo "<script language='javascript'>";
-           echo "alert('Tu reservación se realizó con exito');";
-           echo "window.location.replace('?b=agend')";
-           echo "</script>";
-         }else {
-           echo "<script language='javascript'>";
-           echo "alert('No se pudo realizar tu reservación');";
-           echo "window.location.replace('?b=agend')";
-           echo "</script>";
-         }
+             $res = $this->o->saveCita($data);
+             if ($res) {
+               echo "<script language='javascript'>";
+               echo "alert('Tu reservación se realizó con exito');";
+               echo "window.location.replace('?b=agend')";
+               echo "</script>";
+             }else {
+               echo "<script language='javascript'>";
+               echo "alert('No se pudo realizar tu reservación');";
+               echo "window.location.replace('?b=agend')";
+               echo "</script>";
+             }
+
+
          unset($_SESSION['cita']);
       }else {
         header("location:?b=index");
