@@ -750,10 +750,13 @@ class Controlador
           'nombre'=>$_POST['nombre'],
           'apellido'=>$_POST['apellido'],
           'correo'=>$_POST['correo'],
-          'rol'=>$_POST['rol']
+          'password'=>$_POST['documento'],
+          'rol'=>$_POST['rol'],
+          'estado'=>1,
+          'img'=>''
         ];
         $res = $this->o->createPerf($data);
-        // echo "<pre>"; print_r($_POST); echo "</pre>";
+        // echo "<pre>"; print_r($res); echo "</pre>";
         if ($res) {
           header("location:?b=listAcounts");
         }else {

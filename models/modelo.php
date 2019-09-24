@@ -13,7 +13,7 @@ session_start();
   {
     try {
       // $this->peticion->query("SET NAMES 'utf8'");
-      $h = $this->peticion->prepare("SELECT id_persona, documento, nombre, apellido, correo, rol, estado, img_perfil FROM personas WHERE nombre=:user AND password=:pass AND estado=1");
+      $h = $this->peticion->prepare("SELECT id_persona, documento, nombre, apellido, correo, rol, estado, img_perfil FROM personas WHERE documento=:user AND password=:pass AND estado=1");
       $h->bindParam(':user', $data['user'], PDO::PARAM_STR);
       $h->bindParam(':pass', $data['pass'], PDO::PARAM_STR);
       $h->execute();
@@ -212,17 +212,18 @@ session_start();
   {
     try {
       // $this->peticion->query("SET NAMES 'utf8'");
-      $h = $this->peticion->prepare("INSERT INTO personas VALUES(NULL,:documento, :nombre, :apellido, :correo, :password, :rol, 1)");
+      $h = $this->peticion->prepare("INSERT INTO personas VALUES(NULL,:documento, :nombre, :apellido, :correo, :password, :rol, :estado, :img)");
       $h->bindParam(':documento', $data['documento'], PDO::PARAM_STR);
       $h->bindParam(':nombre', $data['nombre'], PDO::PARAM_STR);
       $h->bindParam(':apellido', $data['apellido'], PDO::PARAM_STR);
       $h->bindParam(':correo', $data['correo'], PDO::PARAM_STR);
-      $h->bindParam(':password', $data['documento'], PDO::PARAM_STR);
+      $h->bindParam(':password', $data['password'], PDO::PARAM_STR);
       $h->bindParam(':rol', $data['rol'], PDO::PARAM_INT);
+      $h->bindParam(':estado', $data['estado'], PDO::PARAM_INT);
+      $h->bindParam(':img', $data['img'], PDO::PARAM_STR);
       $res = $h->execute();
-
     }catch (\Exception $e) {}
-       // echo "<pre>"; print_r($res.'kk'); echo "</pre>";
+       // echo "<pre>"; print_r($data); echo "</pre>";
        return $res;
 
   }
