@@ -1586,6 +1586,8 @@ class Controlador
               echo "alert('Foto cambiada');";
               echo "window.location.replace('?b=perfil')";
               echo "</script>";
+              unlink('app/imgs_perf/'.$_SESSION['barber'][0]->img_perfil);
+              $_SESSION['barber'][0]->img_perfil=$img_perfil;
             }else {
               echo "<script language='javascript'>";
               echo "alert('Error al guardar el archivo');";

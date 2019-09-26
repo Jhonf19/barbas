@@ -1,9 +1,9 @@
 <?php
 require_once('db/mysql.php');
 require_once('controllers/controlador.php');
-// echo "<pre>";
-// print_r($_SESSION);
-// echo "</pre>";
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
     // instancio la clase Cliente_controlador() y nombro al objeto controlador
 $controlador = new Controlador();
 

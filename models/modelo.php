@@ -30,7 +30,7 @@ session_start();
   {
 
     try {
-      $h = $this->peticion->prepare("SELECT * FROM publicaciones ORDER BY fecha DESC LIMIT 2");
+      $h = $this->peticion->prepare("SELECT * FROM publicaciones ORDER BY fecha DESC LIMIT 10");
       $h->execute();
       $result = $h->fetchALL(PDO::FETCH_OBJ);
     } catch (\Exception $e) { }
