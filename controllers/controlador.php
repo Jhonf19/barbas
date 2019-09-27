@@ -846,30 +846,30 @@ class Controlador
       }
     }
 
-    function verifyTurn(){
-      if (isset($_SESSION['barber'])) {
-        // echo "<pre>";
-        // print_r($_GET['cm']);
-        // echo "</pre>";
-        $resT = $this->o->loadSetup();
-        if ($resT) {
-          $tema = $resT->tema;
-        }else {
-          $tema = "no";
-        }
-        include_once('views/layouts/head.php');
-        include_once('views/layouts/header2.html');
-        $res = $this->o->listTur('',$_GET['cm']);
-        include_once('views/barber/cita_table.php');
-        include_once('views/layouts/foot.html');
-
-        if ($res) {
-          // code...
-        }
-      }else {
-        header("location:?b=index");
-      }
-    }
+    // function verifyTurn(){
+    //   if (isset($_SESSION['barber'])) {
+    //     // echo "<pre>";
+    //     // print_r($_GET['cm']);
+    //     // echo "</pre>";
+    //     $resT = $this->o->loadSetup();
+    //     if ($resT) {
+    //       $tema = $resT->tema;
+    //     }else {
+    //       $tema = "no";
+    //     }
+    //     include_once('views/layouts/head.php');
+    //     include_once('views/layouts/header2.html');
+    //     $res = $this->o->listTur('',$_GET['cm']);
+    //     include_once('views/barber/cita_table.php');
+    //     include_once('views/layouts/foot.html');
+    //
+    //     if ($res) {
+    //       // code...
+    //     }
+    //   }else {
+    //     header("location:?b=index");
+    //   }
+    // }
 
     function estate_ch(){
       if (isset($_SESSION['barber'])) {
@@ -1034,81 +1034,81 @@ class Controlador
     }
 
 
-    function new_agend(){
-      if (isset($_SESSION['custom'])) {
-        $resT = $this->o->loadSetup();
-        if ($resT) {
-          $tema = $resT->tema;
-        }else {
-          $tema = "no";
-        }
-        include_once('views/layouts/head.php');
-        include_once('views/layouts/header3.html');
-        $res = $this->o->listTur($_GET['cita'], '');
-        $res2 = $this->o->listBarber($_GET['cita']);
-        include_once('views/custom/agend_barber.php');
-        include_once('views/layouts/foot.html');
+    // function new_agend(){
+    //   if (isset($_SESSION['custom'])) {
+    //     $resT = $this->o->loadSetup();
+    //     if ($resT) {
+    //       $tema = $resT->tema;
+    //     }else {
+    //       $tema = "no";
+    //     }
+    //     include_once('views/layouts/head.php');
+    //     include_once('views/layouts/header3.html');
+    //     $res = $this->o->listTur($_GET['cita'], '');
+    //     $res2 = $this->o->listBarber($_GET['cita']);
+    //     include_once('views/custom/agend_barber.php');
+    //     include_once('views/layouts/foot.html');
+    //
+    //   }else {
+    //     header("location:?b=index");
+    //   }
+    // }
 
-      }else {
-        header("location:?b=index");
-      }
-    }
-
-    function createTurn(){
-      if (isset($_SESSION['custom'])) {
-        $valid = $this->o->listTur('',$_SESSION['custom'][0]->id_persona);
-        if ($valid) {
-         //echo "ya tienes un turno con ".$valid[0]->nombre ." ".$valid[0]->apellido."  <a href='?b=agend'>Volver</a>";
-         echo "<script language='javascript'>";
-         echo "alert('Ya tienes un turno con ".$valid[0]->nombre." ".$valid[0]->apellido." ');";
-         echo "window.location.replace('?b=new_agend&cita=".$valid[0]->id_persona."')";
-         echo "</script>";
-        }else {
-
-          $res = $this->o->createTurn($_GET['cita'],$_SESSION['custom'][0]->id_persona,$ram=random_int(0, 999).$_SESSION['custom'][0]->id_persona);
-          if ($res) {
-            header("location:?b=new_agend&cita=".$_GET['cita']);
-          }else {
-            echo "<script language='javascript'>";
-            echo "alert('Ocurrió un error');";
-            echo "window.location.replace('?b=agend')";
-            echo "</script>";
-          }
-        }
+    // function createTurn(){
+    //   if (isset($_SESSION['custom'])) {
+    //     $valid = $this->o->listTur('',$_SESSION['custom'][0]->id_persona);
+    //     if ($valid) {
+    //      //echo "ya tienes un turno con ".$valid[0]->nombre ." ".$valid[0]->apellido."  <a href='?b=agend'>Volver</a>";
+    //      echo "<script language='javascript'>";
+    //      echo "alert('Ya tienes un turno con ".$valid[0]->nombre." ".$valid[0]->apellido." ');";
+    //      echo "window.location.replace('?b=new_agend&cita=".$valid[0]->id_persona."')";
+    //      echo "</script>";
+    //     }else {
+    //
+    //       $res = $this->o->createTurn($_GET['cita'],$_SESSION['custom'][0]->id_persona,$ram=random_int(0, 999).$_SESSION['custom'][0]->id_persona);
+    //       if ($res) {
+    //         header("location:?b=new_agend&cita=".$_GET['cita']);
+    //       }else {
+    //         echo "<script language='javascript'>";
+    //         echo "alert('Ocurrió un error');";
+    //         echo "window.location.replace('?b=agend')";
+    //         echo "</script>";
+    //       }
+    //     }
         // echo "<pre>";
         // print_r($valid);
         // echo "</pre>";
 
-      }else {
-        header("location:?b=index");
-      }
+    //   }else {
+    //     header("location:?b=index");
+    //   }
+    //
+    // }
 
-    }
-
-    function deleteTurn(){
-      if (isset($_SESSION['custom']) || $_SESSION['barber']) {
-        $id = $_GET['cm'];
-        $res = $this->o->deleteTurn($id);
-
-        if ($res) {
-            if (isset($_SESSION['custom'])) {
-              echo "<script language='javascript'>";
-              echo "alert('Turno eliminado');";
-              echo "window.location.replace('?b=agend')";
-              echo "</script>";
-            }else {
-              header("location:?b=listcitas");
-            }
-        }else {
-          echo "<script language='javascript'>";
-          echo "alert('Ocurrió un error');";
-          echo "window.location.replace('?b=agend')";
-          echo "</script>";
-        }
-      }else {
-        header("location:?b=index");
-      }
-    }
+    // function deleteTurn(){
+    //   if (isset($_SESSION['custom']) || $_SESSION['barber']) {
+    //     $id = $_GET['cm'];
+    //     $res = $this->o->deleteTurn($id);
+    //
+    //     if ($res) {
+    //         if (isset($_SESSION['custom'])) {
+    //           echo "<script language='javascript'>";
+    //           echo "alert('Turno eliminado');";
+    //           echo "window.location.replace('?b=agend')";
+    //           echo "</script>";
+    //         }else {
+    //           header("location:?b=listcitas");
+    //         }
+    //     }else {
+    //       echo "<script language='javascript'>";
+    //       echo "alert('Ocurrió un error');";
+    //       echo "window.location.replace('?b=agend')";
+    //       echo "</script>";
+    //     }
+    //   }else {
+    //     header("location:?b=index");
+    //   }
+    // }
 
     function perfil(){
       if (isset($_SESSION['custom']) || isset($_SESSION['barber']) || isset($_SESSION['admin'])) {

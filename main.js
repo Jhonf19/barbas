@@ -8,7 +8,7 @@ $(function() {
       $dataType : 'json',
       success: function(data) {
         var result = $.parseJSON(data);
-        if (result.length<2) {
+        if (result.length<10) {
           $("#btn_cargar_mas").hide();
         }
 

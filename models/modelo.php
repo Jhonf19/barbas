@@ -44,7 +44,7 @@ session_start();
   {
 
     try {
-      $h = $this->peticion->prepare("SELECT * FROM publicaciones WHERE id_publicacion < :id ORDER BY fecha DESC LIMIT 2");
+      $h = $this->peticion->prepare("SELECT * FROM publicaciones WHERE id_publicacion < :id ORDER BY fecha DESC LIMIT 10");
       $h->bindParam(':id', $id, PDO::PARAM_INT);
       $h->execute();
       $result = $h->fetchALL(PDO::FETCH_OBJ);
